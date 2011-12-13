@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ajax accordion</title>
+    <link rel="stylesheet" type="text/css" href="../../../themes/cupertino/jquery-ui-1.8.custom.css">
+    <link rel="stylesheet" type="text/css" href="../../../styles/core.css"/>
+    <script type="text/javascript" src="../../../scripts/jquery-1.4.js"></script>
+    <script type="text/javascript" src="../../../scripts/jquery-ui-1.8.custom.min.js"></script>
+    <script type="text/javascript">
+      $(function() {
+
+        $('#testSubject').accordion({autoHeight: false,collapsible: true,active: false});
+
+        $('.ui-accordion').bind('accordionchangestart',function(event,info){
+          if (info.newContent.length == 0) return;
+          var href = $('a',info.newHeader).attr('href');
+          if (href.charAt(0) != '#') {
+            info.newContent.load(href);
+            $('a',info.newHeader).attr('href','#');
+          }
+        });
+
+      });
+    </script>
+    <style type="text/css">
+      #testSubject { width: 600px; }
+    </style>
+  </head>
+
+  <body>
+
+    <div id="testSubject">
+      <h2 id="header_puppies"><a href="puppies.html">Puppies</a></h2>
+      <div id="panel_puppies"></div>
+      <h2 id="header_flowers"><a href="flowers.html">Flowers</a></h2>
+      <div id="panel_flowers"></div>
+      <h2 id="header_food"><a href="food.html">Food</a></h2>
+      <div id="panel_food"></div>
+    </div>
+
+  </body>
+</html>

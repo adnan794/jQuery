@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>$.proxy() Example</title>
+    <link rel="stylesheet" type="text/css" href="../styles/core.css">
+    <script type="text/javascript" src="../scripts/jquery-1.4.js"></script>
+    <script type="text/javascript" src="../scripts/jqia2.support.js"></script>
+    <script type="text/javascript">
+      $(function() {
+
+        $('[name="bindType"]').change(function(){
+          $('#testButton,#buttonContainer').unbind('click');
+          if ($('[name="bindType"]:checked').val() == 'normal') {
+            $('#testButton,#buttonContainer').click(
+              function(){ say(this.id); }
+            );
+          }
+          else {
+            $('#testButton,#buttonContainer').click(
+              $.proxy(function(){ say(this.id); }, $('#controlPanel')[0])
+            );
+          }
+        })
+        .change();
+
+      });
+    </script>
+  </head>
+
+  <body>
+
+    <h1>$.proxy() Example</h1>
+
+    <div id="controlPanel">
+      Establish handler as:
+      <input type="radio" name="bindType" value="normal" id="bindTypeNormalControl" checked> <label for="bindTypeNormalControl">Normal</label>
+      <input type="radio" name="bindType" value="proxied" id="bindTypeProxiedControl"> <label for="bindTypeProxiedControl">Proxied</label>
+    </div>
+
+    <div id="testSubjects">
+      <div id="buttonContainer">
+        <button type="button" id="testButton" class="green90x24">Test</button>
+      </div>
+    </div>
+
+  </body>
+
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>jQuery .toggle() Example</title>
+    <link rel="stylesheet" type="text/css" href="../styles/core.css"/>
+    <script type="text/javascript" src="../scripts/jquery-1.4.js"></script>
+    <script type="text/javascript">
+      $(function(){
+
+        $('img[src*=small]').toggle(
+            function() {
+              $(this).attr('src',
+                $(this).attr('src').replace(/small/,'medium'));
+            },
+            function() {
+              $(this).attr('src',
+                $(this).attr('src').replace(/medium/,'large'));
+            },
+            function() {
+              $(this).attr('src',
+                $(this).attr('src').replace(/large/,'small'));
+            }
+        );
+
+      });
+    </script>
+    <style type="text/css">
+      img {
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <div>Click on the image to change its size.</div>
+    <div>
+      <img src="hibiscus.small.jpg" alt="Hibiscus"/>
+    </div>
+
+  </body>
+</html>

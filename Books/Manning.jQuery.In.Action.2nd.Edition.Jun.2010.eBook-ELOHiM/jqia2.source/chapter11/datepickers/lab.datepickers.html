@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>jQuery UI Datepickers Lab</title>
+    <link rel="stylesheet" type="text/css" href="../../styles/core.css">
+    <link rel="stylesheet" type="text/css" href="../../themes/cupertino/jquery-ui-1.8.custom.css">
+    <script type="text/javascript" src="../../scripts/jquery-1.4.js"></script>
+    <script type="text/javascript" src="../../scripts/jquery-ui-1.8.custom.min.js"></script>
+    <script type="text/javascript" src="../../scripts/jqia2.support.js"></script>
+    <script type="text/javascript">
+      $(function(){
+
+        $('#labForm').submit(function(){ return false; } );
+
+        $('#applyButton').click(function(){
+          $('.testSubject').datepicker('destroy');
+          var options = {};
+          $('#valueDisplay').html('&mdash;');
+          $.collectOptions(options);
+          //
+          // special case options
+          //
+          if ($('[name="duration"]:checked').val() != '') {
+            options.duration = $('[name="duration"]:checked').val();
+            if (options.duration === 'value') options.duration = parseInt($('#durationValueField').val());
+          }
+          //
+          // Display the command
+          //
+          var command = "$('.testSubject').datepicker("+$.forDisplay(options)+");";
+          $('#commandDisplay').html(command);
+          //
+          // Register events
+          //
+          options.search = options.open = options.focus = options.change = options.select = options.close = function(event,info){
+            say(event.type + ", " + $.forDisplay(info));
+          };
+          //
+          // Apply
+          //
+          $('.testSubject').empty().datepicker(options);
+        });
+
+        $('#disableButton').click(function(){
+          $('.testSubject').datepicker('disable');
+          $('#commandDisplay').html("$('.testSubject').datepicker('disable');");
+        });
+
+        $('#enableButton').click(function(){
+          $('.testSubject').datepicker('enable');
+          $('#commandDisplay').html("$('.testSubject').datepicker('enable');");
+        });
+
+        $('#enableButton').click(function(){
+          $('.testSubject').datepicker('enable');
+          $('#commandDisplay').html("$('.testSubject').datepicker('enable');");
+        });
+
+        $('#labForm').bind('reset',function(){
+          $('.testSubject').datepicker('destroy');
+          $('#commandDisplay,#valueDisplay').html('&mdash;');
+          $('#console').html('');
+        });
+
+        $('[name="animate"]').change(function(){
+          $('#animateValueField').attr('disabled',!$('[name="animate"][value="value"]').attr('checked'));
+          if ($(this).attr('value') == 'value') $('#animateValueField')[0].focus();
+        });
+
+        $('[name="duration"]').change(function(){
+          $('#durationValueField').attr('disabled',!$('[name="duration"][value="value"]').attr('checked'));
+          if ($(this).attr('value') == 'value') $('#durationValueField')[0].focus();
+        });
+
+
+
+      });
+
+    </script>
+
+    <style>
+      #optionsContainer>div {
+        float: left;
+        width: 400px;
+      }
+      #buttonBar {
+        clear: both;
+        padding-top: 12px;
+      }
+      #column2 input[type=text] {
+        width: 32px;
+      }
+      .testSubjectContainer .body {
+        height: 256px;
+      }
+      #controlPanel label {
+        float: left;
+        text-align: right;
+        width: 15em;
+        font-weight: bold;
+        margin-right: 6px;
+      }
+      #column2 label {
+        width: 144px;
+      }
+      #durationValueField { width: 4em; }
+    </style>
+  </head>
+
+  <body class="fancy">
+
+    <div id="pageContainer">
+      <div id="pageContent">
+
+        <h1>jQuery UI Datepickers Lab</h1>
+
+        <div id="controlPanel" data-module="Control Panel">
+          <form action="" id="labForm">
+
+            <h3>Datepicker options</h3>
+
+            <div>
+              <label>altField:</label>
+              <input type="radio" name="altField" value="" checked="checked" class="radioOption">unspecified
+              <input type="radio" name="altField" value="#otherField" class="radioOption"> #otherField
+            </div>
+
+            <div>
+              <label>altFormat:</label>
+              <input type="text" name="altFormat" class="valueOption">
+            </div>
+
+            <div>
+              <label>appendText:</label>
+              <input type="text" name="appendText" class="valueOption">
+            </div>
+
+            <div>
+              <label>autoSize:</label>
+              <input type="radio" name="autoSize" value="" checked="checked" class="booleanOption">unspecified
+              <input type="radio" name="autoSize" value="true" class="booleanOption">true
+              <input type="radio" name="autoSize" value="false" class="booleanOption">false
+            </div>
+
+            <div>
+              <label>buttonImage:</label>
+              <input type="radio" name="buttonImage" value="" checked="checked" class="radioOption">unspecified
+              <input type="radio" name="buttonImage" value="calendar.png" class="radioOption"> calendar.png
+            </div>
+
+            <div>
+              <label>buttonImageOnly:</label>
+              <input type="radio" name="buttonImageOnly" value="" checked="checked" class="booleanOption">unspecified
+              <input type="radio" name="buttonImageOnly" value="true" class="booleanOption">true
+              <input type="radio" name="buttonImageOnly" value="false" class="booleanOption">false
+            </div>
+
+            <div>
+              <label>buttonText:</label>
+              <input type="text" name="buttonText" class="valueOption">
+            </div>
+
+            <div>
+              <label>changeMonth:</label>
+              <input type="radio" name="changeMonth" value="" checked="checked" class="booleanOption">unspecified
+              <input type="radio" name="changeMonth" value="true" class="booleanOption">true
+              <input type="radio" name="changeMonth" value="false" class="booleanOption">false
+            </div>
+
+            <div>
+              <label>changeYear:</label>
+              <input type="radio" name="changeYear" value="" checked="checked" class="booleanOption">unspecified
+              <input type="radio" name="changeYear" value="true" class="booleanOption">true
+              <input type="radio" name="changeYear" value="false" class="booleanOption">false
+            </div>
+
+            <div>
+              <label>closeText:</label>
+              <input type="text" name="closeText" class="valueOption">
+            </div>
+
+            <div>
+              <label>constrainInput:</label>
+              <input type="radio" name="constrainInput" value="" checked="checked" class="booleanOption">unspecified
+              <input type="radio" name="constrainInput" value="true" class="booleanOption">true
+              <input type="radio" name="constrainInput" value="false" class="booleanOption">false
+            </div>
+
+            <div>
+              <label>currentText:</label>
+              <input type="text" name="currentText" class="valueOption">
+            </div>
+
+            <div>
+              <label>dateFormat:</label>
+              <input type="text" name="dateFormat" class="valueOption">
+            </div>
+
+            <div>
+              <label>defaultDate:</label>
+              <input type="text" name="defaultDate" class="valueOption">
+            </div>
+
+            <div>
+              <label>duration:</label>
+              <input type="radio" name="duration" value="" checked>unspecified
+              <input type="radio" name="duration" value="slow">slow
+              <input type="radio" name="duration" value="normal">normal
+              <input type="radio" name="duration" value="fast">fast
+              <input type="radio" name="duration" value="value">
+              <input type="text" id="durationValueField" disabled> (msecs)
+            </div>
+
+            <div>
+              <label>firstDay:</label>
+              <input type="radio" name="firstDay" value="" checked="checked" class="radioOption">unspecified
+              <input type="radio" name="firstDay" value="0" class="radioOption"> 0
+              <input type="radio" name="firstDay" value="1" class="radioOption"> 1
+              <input type="radio" name="firstDay" value="2" class="radioOption"> 2
+              <input type="radio" name="firstDay" value="3" class="radioOption"> 3
+              <input type="radio" name="firstDay" value="4" class="radioOption"> 4
+              <input type="radio" name="firstDay" value="5" class="radioOption"> 5
+              <input type="radio" name="firstDay" value="6" class="radioOption"> 6
+            </div>
+
+            <div>
+              <label>gotoCurrent:</label>
+              <input type="radio" name="gotoCurrent" value="" checked="checked" class="booleanOption">unspecified
+              <input type="radio" name="gotoCurrent" value="true" class="booleanOption">true
+              <input type="radio" name="gotoCurrent" value="false" class="booleanOption">false
+            </div>
+
+            <div>
+              <label>hideIfNoPrevNext:</label>
+              <input type="radio" name="hideIfNoPrevNext" value="" checked="checked" class="booleanOption">unspecified
+              <input type="radio" name="hideIfNoPrevNext" value="true" class="booleanOption">true
+              <input type="radio" name="hideIfNoPrevNext" value="false" class="booleanOption">false
+            </div>
+
+            <div>
+              <label>maxDate:</label>
+              <input type="text" name="maxDate" class="valueOption">
+            </div>
+
+            <div>
+              <label>minDate:</label>
+              <input type="text" name="minDate" class="valueOption">
+            </div>
+
+            <div>
+              <label>navigationAsDateFormat:</label>
+              <input type="radio" name="navigationAsDateFormat" value="" checked="checked" class="booleanOption">unspecified
+              <input type="radio" name="navigationAsDateFormat" value="true" class="booleanOption">true
+              <input type="radio" name="navigationAsDateFormat" value="false" class="booleanOption">false
+            </div>
+
+            <div>
+              <label>nextText:</label>
+              <input type="text" name="NextText" class="valueOption">
+            </div>
+
+            <div>
+              <label>numberOfMonths:</label>
+              <input type="text" name="numberOfMonths" class="evalOption">
+            </div>
+
+            <div>
+              <label>prevText:</label>
+              <input type="text" name="prevText" class="valueOption">
+            </div>
+
+            <div>
+              <label>selectOtherMonths:</label>
+              <input type="radio" name="selectOtherMonths" value="" checked="checked" class="booleanOption">unspecified
+              <input type="radio" name="selectOtherMonths" value="true" class="booleanOption">true
+              <input type="radio" name="selectOtherMonths" value="false" class="booleanOption">false
+            </div>
+
+            <div>
+              <label>showAnim:</label>
+              <input type="radio" name="showAnim" value="" checked="checked" class="radioOption">unspecified
+              <input type="radio" name="showAnim" value="show" class="radioOption"> show
+              <input type="radio" name="showAnim" value="fadeIn" class="radioOption"> fadeIn
+              <input type="radio" name="showAnim" value="slideDown" class="radioOption"> slideDown
+            </div>
+
+            <div>
+              <label>showButtonPanel:</label>
+              <input type="radio" name="showButtonPanel" value="" checked="checked" class="booleanOption">unspecified
+              <input type="radio" name="showButtonPanel" value="true" class="booleanOption">true
+              <input type="radio" name="showButtonPanel" value="false" class="booleanOption">false
+            </div>
+
+            <div>
+              <label>showCurrentAtPos:</label>
+              <input type="text" name="showCurrentAtPos" class="evalOption">
+            </div>
+
+            <div>
+              <label>showMonthAfterYear:</label>
+              <input type="radio" name="showMonthAfterYear" value="" checked="checked" class="booleanOption">unspecified
+              <input type="radio" name="showMonthAfterYear" value="true" class="booleanOption">true
+              <input type="radio" name="showMonthAfterYear" value="false" class="booleanOption">false
+            </div>
+
+            <div>
+              <label>showOn:</label>
+              <input type="radio" name="showOn" value="" checked="checked" class="radioOption">unspecified
+              <input type="radio" name="showOn" value="focus" class="radioOption"> focus
+              <input type="radio" name="showOn" value="button" class="radioOption"> button
+              <input type="radio" name="showOn" value="both" class="radioOption"> both
+            </div>
+
+            <div>
+              <label>showOtherMonths:</label>
+              <input type="radio" name="showOtherMonths" value="" checked="checked" class="booleanOption">unspecified
+              <input type="radio" name="showOtherMonths" value="true" class="booleanOption">true
+              <input type="radio" name="showOtherMonths" value="false" class="booleanOption">false
+            </div>
+
+            <div>
+              <label>showWeek:</label>
+              <input type="radio" name="showWeek" value="" checked="checked" class="booleanOption">unspecified
+              <input type="radio" name="showWeek" value="true" class="booleanOption">true
+              <input type="radio" name="showWeek" value="false" class="booleanOption">false
+            </div>
+
+            <div>
+              <label>stepMonths:</label>
+              <input type="text" name="stepMonths" class="evalOption">
+            </div>
+
+            <div>
+              <label>weekHeader:</label>
+              <input type="text" name="weekHeader" class="valueOption">
+            </div>
+
+            <div>
+              <label>yearRange:</label>
+              <input type="text" name="yearRange" class="valueOption">
+            </div>
+
+            <div>
+              <label>yearSuffix:</label>
+              <input type="text" name="yearSuffix" class="valueOption">
+            </div>
+
+            <div id="buttonBar">
+              <button type="button" id="applyButton" class="green90x24">Apply</button>
+              <button type="button" id="disableButton" class="green90x24">Disable</button>
+              <button type="button" id="enableButton" class="green90x24">Enable</button>
+              <button type="reset" id="resetButton" class="green90x24">Reset</button>
+            </div>
+
+          </form>
+
+          <div>
+            <h3>Executed commands:</h3>
+            <div id="commandDisplay">&mdash;</div>
+          </div>
+        </div>
+
+        <div id="testSubjectContainer" data-module="Test Subjects">
+
+          <input type="text" class="testSubject"/>
+
+          <div style="margin-top:32px">
+            <input type="text" id="otherField" readonly/> &laquo; alternate field (usually hidden)
+          </div>
+
+        </div>
+
+        <div id="console" data-module="Console">
+        </div>
+
+      </div>
+    </div>
+
+  </body>
+</html>
+

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>jQuery Operations Lab Page</title>
+    <link rel="stylesheet" type="text/css" href="../styles/core.css">
+    <style type="text/css">
+      div#operationPane {
+        float: left;
+        width: 45%;
+      }
+
+      input#operationField {
+        width: 90%;
+      }
+
+      div#samplePane {
+        float: right;
+        width: 53%;
+      }
+
+      #sampleFrame {
+        width: 99%;
+        height: 440px;
+        background-color: white;
+      }
+
+      div#codePane {
+        clear: both;
+      }
+
+      div#sampleDOMCode pre {
+        background-color: white;
+      }
+
+      div#resultsPane {
+        margin-top: 12px;
+        display: none;
+      }
+
+      span#jqueryStatement {
+        color: maroon;
+        font-family: monospace;
+      }
+
+      div.buttonBar {
+        margin-top: 8px;
+      }
+    </style>
+    <script type="text/javascript" src="../scripts/jquery-1.4.js"></script>
+    <script type="text/javascript" src="elements.js"></script>
+    <script type="text/javascript" src="../scripts/jqia2.support.js"></script>
+    <script type="text/javascript">
+      $(function() {
+
+        $.get(
+          'dom.sample.html',
+          function(data){
+            $('#sampleDOMCode pre').html(data.replace(/</g,'&lt;').replace(/>/g,'&gt;'));
+          });
+
+        $('form#selectorForm').submit(function() {
+          $('#resultingElements').html('');
+          var operation = $.trim($('#operationField').val());
+          if (operation.length == 0) return false;
+          var wrappedSet = sampleFrame.perform(operation);
+          var elements = wrappedSet.elementsForDisplay();
+          var labelText = elements.length + ' matching element' + (elements.length == 1 ? '' : 's') + ':';
+          $('label[for=resultingElements]').html(labelText);
+          $.each(elements,function(){
+            $('#resultingElements').append($('<div>'+this+'</div>'));
+          });
+          $('#resultsPane').fadeIn('slow');
+          return false;
+        });
+
+        $('#restoreButton').click(function(){
+          $('#sampleFrame').attr('src','dom.sample.page.html');
+          $('#resultsPane').hide();
+        });
+
+      });
+    </script>
+  </head>
+
+  <body class="fancy">
+
+    <div id="pageContainer">
+      <div id="pageContent">
+
+        <h1>jQuery Operations Lab Page</h1>
+
+        <div data-module="Operation" data-module-id="operationPane">
+          <form id="selectorForm" action="#">
+
+            <p>Type any jQuery expression that results in a jQuery wrapped set into the text field below and press the Execute button.</p>
+
+            <label for="operationField">Operation:</label><br/>
+            <input type="text" id="operationField"/>
+
+            <div class="buttonBar">
+              <button type="submit" class="green90x24">Execute</button>
+              <button type="button" id="restoreButton" class="green90x24">Restore</button>
+            </div>
+
+          </form>
+
+          <div id="resultsPane">
+            <p>
+              <label for="resultingElements">X</label>
+              <div id="resultingElements"></div>
+            </p>
+          </div>
+
+        </div>
+
+        <div data-module="DOM Sample" data-module-id="samplePane">
+          <iframe id="sampleFrame" src="dom.sample.page.html" name="sampleFrame" frameborder="0" marginheight="0" marginwidth="0"></iframe>
+        </div>
+
+        <div data-module="DOM Sample Code" data-module-id="codePane">
+          <div id="sampleDOMCode">
+            <pre></pre>
+          </div>
+        </div>
+
+        <div class="footer">jQuery in Action, 2nd edition, sample code<br/>Bear Bibeault and Yehuda Katz</div>
+
+      </div>
+    </div>
+
+  </body>
+</html>

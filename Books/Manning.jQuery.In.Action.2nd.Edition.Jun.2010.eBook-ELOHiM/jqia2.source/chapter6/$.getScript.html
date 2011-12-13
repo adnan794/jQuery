@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>$.getScript() Example</title>
+    <link rel="stylesheet" type="text/css" href="../styles/core.css">
+    <script type="text/javascript" src="../scripts/jquery-1.4.js"></script>
+    <script type="text/javascript" src="../scripts/jqia2.support.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        $('#loadButton').click(function(){
+          $.getScript(
+            'new.stuff.js'
+            //,function(){$('#inspectButton').click()}
+          );
+        });
+        $('#inspectButton').click(function(){
+          someFunction(someVariable);
+        });
+      });
+    </script>
+  </head>
+
+  <body>
+    <button type="button" id="loadButton" class="green90x24">Load</button>
+    <button type="button" id="inspectButton" class="green90x24">Inspect</button>
+  </body>
+</html>

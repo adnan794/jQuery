@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>jQuery UI Easings Lab</title>
+    <link rel="stylesheet" type="text/css" href="../styles/core.css">
+    <link rel="stylesheet" type="text/css" href="../themes/cupertino/jquery-ui-1.8.custom.css">
+    <script type="text/javascript" src="../scripts/jquery-1.4.js"></script>
+    <script type="text/javascript" src="../scripts/jquery-ui-1.8.custom.min.js"></script>
+    <script type="text/javascript" src="../scripts/jqia2.support.js"></script>
+    <script type="text/javascript">
+      $(function(){
+
+        $('#labForm').submit(function(){ return false; } );
+
+        $.each($.easing,function(name,value){
+          if ($.isFunction(value)) $('<option>',{value:name}).html(name).appendTo('#easingControl');
+        });
+
+        $('#effectControl,#easingControl').change(function(){
+          $('[value=""]',this).remove();
+        });
+
+        $('#speedContainer').click(function(event){
+          $('#speedValueControl').attr('disabled',!$('#speedControlCustom').is(':checked'));
+        });
+
+        $('#applyButton').click(function(){
+
+          var easingName = $('#easingControl').val();
+          if (easingName == '') return;
+
+          var effectName = $('#effectControl').val();
+          if (effectName == '') return;
+
+          var speed = $('#speedContainer :radio:checked').val();
+          if (speed=='custom') {
+            speed = parseInt($('#speedValueControl').val());
+            if (isNaN(speed)||(speed<0)) speed='normal';
+          }
+          if (speed == 'none') speed = null;
+
+          var options = {};
+          $.collectOptions(options);
+          options.easing = easingName;
+
+          if (effectName == 'transfer') { options.to = '#applyButton'; }
+          if (effectName == 'scale') { options.percent = 25; }
+
+          //
+          // Display the command
+          //
+          $('#commandDisplay').html(
+            "$('.testSubject').effect('" + effectName + "',"+$.forDisplay(options)+","+$.forDisplay(speed)+");"
+          );
+          //
+          // Apply effect
+          //
+          $('.testSubject').effect(effectName,options,speed,function(){ var subject = this; setTimeout(restoreTestSubjects,2000); });
+        });
+
+        $('#labForm').bind('reset',function(){
+          if ($('#easingControl option[value=""]').length == 0) $('<option>',{ value: '' }).insertBefore($('#easingControl option:first')).html('&mdash;choose one&mdash;');
+          if ($('#effectControl option[value=""]').length == 0) $('<option>',{ value: '' }).insertBefore($('#effectControl option:first')).html('&mdash;choose one&mdash;');
+          this.reset();
+          restoreTestSubjects();
+          $('#commandDisplay').empty();
+        });
+
+        function restoreTestSubjects() {
+          $('.testSubject,.testSubject *').removeAttr('style');
+        }
+
+      });
+
+    </script>
+
+    <style>
+      #optionsPane > div { display: none; }
+      #buttonBar {
+        clear: both;
+        padding-top: 12px;
+      }
+      #testSubjectContainer {
+        height: 264px;
+      }
+      .testSubject {
+        width: 320px;
+        padding: 12px;
+        border: 1px solid black;
+      }
+      #controlPanel label {
+        margin-right: 6px;
+        font-weight: normal;
+      }
+      #controlPanel label:first-child {
+        float: left;
+        text-align: right;
+        width: 6em;
+        font-weight: bold;
+      }
+      [type="number"] { width: 4em; }
+      .ui-effects-transfer { border: 4px #deb887 solid; }
+    </style>
+  </head>
+
+  <body class="fancy">
+
+    <div id="pageContainer">
+      <div id="pageContent">
+
+        <h1>jQuery UI Easings Lab</h1>
+
+        <div id="controlPanel" data-module="Control Panel">
+          <form action="" id="labForm">
+
+            <h3>Easings options</h3>
+
+            <div>
+              <label for="easingControl">Easing:</label>
+              <select id="easingControl">
+                <option value="">&mdash;choose one&mdash;</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="effectControl">Effect:</label>
+              <select id="effectControl">
+                <option value="">&mdash;choose one&mdash;</option>
+                <option value="blind">Blind</option>
+                <option value="bounce">Bounce</option>
+                <option value="clip">Clip</option>
+                <option value="drop">Drop</option>
+                <option value="explode">Explode</option>
+                <option value="fade">Fade</option>
+                <option value="fold">Fold</option>
+                <option value="highlight">Highlight</option>
+                <option value="puff">Puff</option>
+                <option value="pulsate">Pulsate</option>
+                <option value="scale">Scale</option>
+                <option value="shake">Shake</option>
+                <option value="size">Size</option>
+                <option value="slide">Slide</option>
+                <option value="transfer">Transfer</option>
+              </select>
+            </div>
+
+            <div id="speedPane">
+              <div id="speedContainer">
+                <label>Speed:</label>
+                <input type="radio" name="speed" value="none" checked id="speedControlNone"/> <label for="speedControlNone">None</label>
+                <input type="radio" name="speed" value="slow" id="speedControlSlow"/> <label for="speedControlSlow">Slow</label>
+                <input type="radio" name="speed" value="normal" id="speedControlNormal"/> <label for="speedControlNormal">Normal</label>
+                <input type="radio" name="speed" value="fast" id="speedControlFast"/> <label for="speedControlFast">Fast</label>
+                <input type="radio" name="speed" value="custom" id="speedControlCustom"/> <label for="speedControlCustom">Milliseconds:</label>
+                <input type="text" name="speedValue" id="speedValueControl" disabled="disabled"/>
+              </div>
+            </div>
+
+            <div id="buttonBar">
+              <button type="button" id="applyButton" class="green90x24">Apply</button>
+              <button type="reset" id="resetButton" class="green90x24">Reset</button>
+            </div>
+
+          </form>
+
+          <div>
+            <h3>Executed command:</h3>
+            <div id="commandDisplay">---</div>
+          </div>
+        </div>
+
+        <div id="testSubjectContainer" data-module="Test Subject">
+
+          <div class="testSubject">
+            <img src="images/hibiscus.medium.jpg" width="320" height="213">
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </body>
+</html>
+

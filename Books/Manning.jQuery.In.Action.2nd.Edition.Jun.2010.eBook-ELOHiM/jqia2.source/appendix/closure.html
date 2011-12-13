@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Closure Example</title>
+    <script type="text/javascript"
+            src="../scripts/jquery-1.4.js"></script>
+    <script>
+      $(function(){
+        var local = 1;
+        window.setInterval(function(){
+          $('#display')
+            .append('<div>At '+new Date()+' local='+local+'</div>');
+          local++;
+        },3000);
+      });
+    </script>
+  </head>
+
+  <body>
+    <div id="display"></div>
+  </body>
+</html>

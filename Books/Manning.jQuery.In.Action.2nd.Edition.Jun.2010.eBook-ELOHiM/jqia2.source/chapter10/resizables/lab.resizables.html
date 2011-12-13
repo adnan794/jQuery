@@ -1,0 +1,249 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <title>jQuery UI Resizables Lab</title>
+    <link rel="stylesheet" type="text/css" href="../../themes/cupertino/jquery-ui-1.8.custom.css">
+    <link rel="stylesheet" type="text/css" href="../../styles/core.css">
+    <script type="text/javascript" src="../../scripts/jquery-1.4.js"></script>
+    <script type="text/javascript" src="../../scripts/jquery-ui-1.8.custom.min.js"></script>
+    <script type="text/javascript" src="../../scripts/jqia2.support.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        $('#labForm').submit(function(){ return false; } );
+        $('#applyButton').click(function(){
+          $('.testSubject').resizable('destroy');
+          var options = {};
+          $.collectOptions(options);
+          //
+          // Special case options
+          //
+          var animateDuration = $('#animateDurationContainer :radio:checked').val();
+          if (animateDuration=='custom') {
+            animateDuration = parseInt($('#animateDurationValueControl').val());
+            if (isNaN(animateDuration)||(animateDuration<0)) animateDuration='normal';
+          }
+          if (animateDuration != '') options.animateDuration = animateDuration;
+          var aspectRatio = $('#aspectRatioContainer :radio:checked').val();
+          if (aspectRatio=='custom') {
+            aspectRatio = parseFloat($('#aspectRatioValueControl').val());
+            if (isNaN(aspectRatio)||(aspectRatio<0)) aspectRatio='normal';
+          }
+          if (aspectRatio == 'true') aspectRatio = true;
+          if (aspectRatio == 'false') aspectRatio = false;
+          if (aspectRatio !== '') options.aspectRatio = aspectRatio;
+          if ($('[name=handles]:checked').length > 0) options.handles = $('[name=handles]:checked').map(function(){return $(this).val();}).get().join(',');
+          if ($('#minHeightControl').val()!='') options.minHeight = parseInt($('#minHeightControl').val());
+          if ($('#minWidthControl').val()!='') options.minWidth = parseInt($('#minWidthControl').val());
+          if ($('#maxHeightControl').val()!='') options.maxHeight = parseInt($('#maxHeightControl').val());
+          if ($('#maxWidthControl').val()!='') options.maxWidth = parseInt($('#maxWidthControl').val());
+          //
+          // Display
+          //
+          $('#commandDisplay').html("$('.testSubject').resizable("+$.forDisplay(options)+");");
+          //
+          // Callbacks
+          //
+          options.start = options.stop = options.resize = function(event,info){
+            if (info.position != null) $('#positionInfo').html('('+info.position.left+','+info.position.top+')');
+            if (info.size != null) $('#sizeInfo').html(info.size.width+' x '+info.size.height);
+          };
+          //
+          // Apply
+          //
+          $('div.testSubject')
+              .draggable({drag:function(event,info){
+                if (info.position != null) $('#positionInfo').html('('+info.position.left+','+info.position.top+')');
+               }})
+              .resizable(options);
+        });
+        $('#disableButton').click(function(){
+          $('.testSubject').resizable('disable');
+          $('#commandDisplay').html("$('.testSubject').resizable('disable');");
+        });
+        $('#enableButton').click(function(){
+          $('.testSubject').resizable('enable');
+          $('#commandDisplay').html("$('.testSubject').resizable('enable');");
+        });
+        $('#labForm').bind('reset',function(){
+          $('.testSubject').resizable('destroy');
+          $('form')[0].reset();
+          $('#animateDurationValueControl').attr('disabled',true);
+          $('#animateDurationContainer [type="radio"]').attr('disabled',true);
+        });
+        $('[name="animate"]').change(function(){
+          $('#animateDurationContainer [type="radio"]').attr('disabled',!$('#animateTrueControl').attr('checked'));
+        });
+        $('[name="animateDuration"]').change(function(){
+          $('#animateDurationValueControl').attr('disabled',!$('#animateDurationCustomControl').attr('checked'));
+        });
+        $('[name="aspectRatio"]').change(function(){
+          $('#aspectRatioValueControl').attr('disabled',!$('#aspectRatioCustomControl').attr('checked'));
+        });
+      });
+    </script>
+    <style>
+      #buttonBar {
+        clear: both;
+        padding-top: 12px;
+      }
+      label {
+        float: left;
+        text-align: right;
+        width: 11em;
+        font-weight: bold;
+        margin-right: 6px;
+      }
+      #console label {
+        width: 6em !important;
+      }
+      #console div {
+        clear: both;
+      }
+      #console label {
+        width: 120px;
+      }
+      #optionsContainer div {
+        clear: both;
+      }
+      #testSubjectContainer {
+        height: 276px;
+        position: relative;
+      }
+      div.testSubject {
+        width: 256px;
+        height: 170px;
+        border: 3px solid black;
+        position: absolute;
+      }
+      div#testSubject1 {
+        left: 8px;
+        top: 8px;
+      }
+      div#testSubject2 {
+        left: 320px;
+        top: 8px;
+      }
+      .testSubject img {
+        position: relative;
+        width: 100%;
+        height: 100%;
+      }
+      .ui-resizable-helper {
+        border: 1px solid #82bf5a;
+      }
+      #animateDurationValueControl {
+        width: 5em;
+      }
+      #sizeConstraintPane input {
+        width: 4em;
+      }
+    </style>
+  </head>
+
+  <body class="fancy">
+    <div id="pageContainer">
+      <div id="pageContent">
+
+        <h1>jQuery UI Resizables Lab</h1>
+
+        <div data-module="Control Panel">
+          <form action="" id="labForm">
+            <h3>Resizing options</h3>
+            <div id="optionsContainer">
+              <div>
+                <label>alsoResize:</label>
+                <input type="radio" name="alsoResize" value="" checked="checked" class="radioOption">unspecified
+                <input type="radio" name="alsoResize" value=".testSubject" class="radioOption">other test subject
+              </div>
+              <div>
+                <label>animate:</label>
+                <input type="radio" name="animate" value="" checked="checked" class="booleanOption">unspecified
+                <input type="radio" name="animate" value="true" class="booleanOption" id="animateTrueControl">true
+                <input type="radio" name="animate" value="false" class="booleanOption">false
+              </div>
+              <div id="animateDurationContainer">
+                <label for="firstAnimateDurationRadio">animateDuration:</label>
+                <input type="radio" name="animateDuration" value="" checked id="firstAnimateDurationRadio" disabled/> unspecified
+                <input type="radio" name="animateDuration" value="slow" disabled/> slow
+                <input type="radio" name="animateDuration" value="normal" disabled/> normal
+                <input type="radio" name="animateDuration" value="fast" disabled/> fast
+                <input type="radio" name="animateDuration" value="custom" id="animateDurationCustomControl" disabled/> milliseconds:
+                <input type="text" name="animateDurationValue" id="animateDurationValueControl" disabled/>
+              </div>
+              <div id="aspectRatioContainer">
+                <label for="firstAspectRatioRadio">aspectRatio:</label>
+                <input type="radio" name="aspectRatio" value="" checked id="firstAspectRatioRadio"/> unspecified
+                <input type="radio" name="aspectRatio" value="false"/> false
+                <input type="radio" name="aspectRatio" value="true"/> true
+                <input type="radio" name="aspectRatio" value="custom" id="aspectRatioCustomControl"/> float:
+                <input type="text" name="aspectRatioValue" id="aspectRatioValueControl" disabled/>
+              </div>
+              <div>
+                <label>autoHide:</label>
+                <input type="radio" name="autoHide" value="" checked="checked" class="booleanOption">unspecified
+                <input type="radio" name="autoHide" value="true" class="booleanOption">true
+                <input type="radio" name="autoHide" value="false" class="booleanOption">false
+              </div>
+              <div>
+                <label>containment:</label>
+                <input type="radio" name="containment" value="" checked="checked" class="radioOption">none
+                <input type="radio" name="containment" value="document" class="radioOption">document
+                <input type="radio" name="containment" value="parent" class="radioOption">parent
+                <input type="radio" name="containment" value="window" class="radioOption">window
+              </div>
+              <div>
+                <label>ghost:</label>
+                <input type="radio" name="ghost" value="" checked="checked" class="booleanOption">unspecified
+                <input type="radio" name="ghost" value="true" class="booleanOption">true
+                <input type="radio" name="ghost" value="false" class="booleanOption">false
+              </div>
+              <div>
+                <label>handles:</label>
+                <input type="checkbox" name="handles" value="n">n
+                <input type="checkbox" name="handles" value="ne">ne
+                <input type="checkbox" name="handles" value="e">e
+                <input type="checkbox" name="handles" value="se">se
+                <input type="checkbox" name="handles" value="s">s
+                <input type="checkbox" name="handles" value="sw">sw
+                <input type="checkbox" name="handles" value="w">w
+                <input type="checkbox" name="handles" value="nw">nw
+              </div>
+              <div id="sizeConstraintPane">
+                <label>minHeight:</label>
+                <input type="text" id="minHeightControl"/>
+                <label style="float:none;">minWidth:</label>
+                <input type="text" id="minWidthControl"/>
+                <label style="float:none;">maxHeight:</label>
+                <input type="text" id="maxHeightControl"/>
+                <label style="float:none;">maxWidth:</label>
+                <input type="text" id="maxWidthControl"/>
+              </div>
+            </div>
+            <div id="buttonBar">
+              <button type="button" id="applyButton" class="green90x24">Apply</button>
+              <button type="button" id="disableButton" class="green90x24">Disable</button>
+              <button type="button" id="enableButton" class="green90x24">Enable</button>
+              <button type="reset" id="resetButton" class="green90x24">Reset</button>
+            </div>
+          </form>
+          <div>
+            <h3>Executed command:</h3>
+            <div id="commandDisplay">---</div>
+          </div>
+        </div>
+
+        <div data-module="Test Subjects" id="testSubjectContainer">
+          <div class="testSubject" id="testSubject1"><img src="apples.jpg" alt="Apples"></div>
+          <div class="testSubject" id="testSubject2"><img src="hibiscus.jpg" alt="Hibiscus"></div>
+        </div>
+
+        <div data-module="Console" id="console">
+          <div><label>Position:</label> <span id="positionInfo">---</span></div>
+          <div><label>Size:</label> <span id="sizeInfo">---</span></div>
+        </div>
+
+      </div>
+    </div>
+
+  </body>
+</html>

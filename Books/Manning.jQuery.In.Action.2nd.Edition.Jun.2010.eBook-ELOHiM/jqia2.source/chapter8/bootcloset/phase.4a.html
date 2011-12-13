@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>The Boot Closet &mdash; Phase 4a</title>
+    <link rel="stylesheet" type="text/css" href="../../styles/core.css">
+    <link rel="stylesheet" type="text/css" href="bootcloset.css">
+    <link rel="icon" type="image/gif" href="images/favicon.gif">
+    <script type="text/javascript" src="../../scripts/jquery-1.4.js"></script>
+    <script type="text/javascript" src="../../scripts/jqia2.support.js"></script>
+    <script type="text/javascript" src="jquery.jqia.termifier.js"></script>
+    <script type="text/javascript">
+      $(function() {
+
+        $('#bootChooserControl')
+          .load('/jqia2/action/fetchBootStyleOptions');
+
+        $('#bootChooserControl').change(function(event){
+          $('#productDetailPane').load(
+            '/jqia2/action/fetchProductDetails',
+            $('#bootChooserControl').serialize(),
+            function(){ $('abbr').termifier('/jqia2/action/fetchTerm'); }
+          );
+          $('#colorChooserControl').load(
+            '/jqia2/action/fetchColorOptions',
+            $('#bootChooserControl').serialize(),
+            function(){
+              $('#colorChooserControl').attr('disabled',false);
+              $('#sizeChooserControl')
+                .attr('disabled',true)
+                .find('option').remove();
+            }
+          );
+        });
+
+        $('#colorChooserControl').change(function(event){
+          $('#sizeChooserControl').load(
+            '/jqia2/action/fetchSizeOptions',
+            $('#bootChooserControl,#colorChooserControl').serialize(),
+            function(){
+              $('#sizeChooserControl').attr('disabled',false);
+            }
+          );
+        });
+
+        $('#selectionsPane').change(function(event){
+          $('[value=""]',event.target).remove();
+        });
+
+        $('body').ajaxComplete(function(event,xhr,options){
+         if (options.url.indexOf('fetchProductDetails') != -1) {
+           $('div.termifier').remove();
+         }
+        });
+
+      });
+    </script>
+  </head>
+
+  <body>
+
+    <div id="banner">
+      <img src="images/banner.boot.closet.png" alt="The Boot Closet"/>
+    </div>
+
+    <div id="pageContent">
+
+      <h1>Choose your boots</h1>
+
+      <div>
+
+        <div id="selectionsPane">
+          <label for="bootChooserControl">Boot style:</label>
+          <select id="bootChooserControl" name="style"></select>
+          <label for="colorChooserControl">Color:</label>
+          <select id="colorChooserControl" name="color" disabled="disabled"></select>
+          <label for="sizeChooserControl">Size:</label>
+          <select id="sizeChooserControl" name="size" disabled="disabled"></select>
+        </div>
+
+        <div id="productDetailPane"></div>
+
+      </div>
+
+    </div>
+
+  </body>
+
+</html>

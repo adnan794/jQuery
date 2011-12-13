@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>jQuery UI Sortables Lab</title>
+    <link rel="stylesheet" type="text/css" href="../../styles/core.css">
+    <script type="text/javascript" src="../../scripts/jquery-1.4.js"></script>
+    <script type="text/javascript" src="../../scripts/jquery-ui-1.8.custom.min.js"></script>
+    <script type="text/javascript" src="../../scripts/jqia2.support.js"></script>
+    <script type="text/javascript">
+      $(function(){
+
+        $('#labForm').submit(function(){ return false; } );
+
+        $('#applyButton').click(function(){
+          $('#testSubject').sortable('destroy');
+          var options = {};
+          $.collectOptions(options);
+          //
+          // special case options
+          //
+          var gridX = $('#gridXField').val();
+          var gridY = $('#gridYField').val();
+          if (gridX!=''||gridY!='') {
+            gridX = (gridX=='') ? 0 : parseInt(gridX);
+            gridY = (gridY=='') ? 0 :parseInt(gridY);
+            options.grid=[gridX,gridY];
+          }
+          var cursorAtTop = $('#cursorAtTopField').val();
+          var cursorAtLeft = $('#cursorAtLeftField').val();
+          if (cursorAtTop!=''||cursorAtLeft!='') {
+            cursorAtTop = (cursorAtTop=='') ? 0 : parseInt(cursorAtTop);
+            cursorAtLeft = (cursorAtLeft=='') ? 0 : parseInt(cursorAtLeft);
+            options.cursorAt={top:cursorAtTop,left:cursorAtLeft};
+          }
+          if ($('#connectWithControl:checked').length != 0) {
+            options.connectWith = '#otherSubject';
+          }
+          //
+          // Display the command
+          //
+          $('#commandDisplay').html("$('#testSubject').sortable("+$.forDisplay(options)+");");
+          //
+          // Register events
+          //
+          options.start = options.drag = options.stop = function(event,info) {
+            if (info.position != null) $('#positionInfo').html('('+info.position.left+','+info.position.top+')');
+            if (info.offset != null) $('#offsetInfo').html('('+info.offset.left+','+info.offset.top+')');
+          };
+          //
+          // Establish update handler to show results in console
+          //
+          options.update = function(event,info) {
+            $('#resultToArray').html($.forDisplay($(this).sortable('toArray')));
+            $('#resultSerialize').html($(this).sortable('serialize'));
+          };
+          //
+          // Apply sortability to the test subject
+          //
+          $('#testSubject').sortable(options);
+        });
+        $('#disableButton').click(function(){
+          $('#testSubject').sortable('disable');
+          $('#commandDisplay').html("$('#testSubject').sortable('disable');");
+        });
+        $('#enableButton').click(function(){
+          $('#testSubject').sortable('enable');
+          $('#commandDisplay').html("$('#testSubject').sortable('enable');");
+        });
+        $('#labForm').bind('reset',function(){
+          $('#labForm')[0].reset();
+          $('#testSubject').sortable('destroy');
+          $('#commandDisplay').html("$('#testSubject').sortable('destroy');");
+        });
+        $('#connectWithControl').change(function(){
+          $('#otherSubjectPanel').toggle($(this).attr('checked')==true);
+          $('#otherSubject').sortable($(this).attr('checked') ? {} : 'destroy');
+        });
+      });
+
+    </script>
+
+    <style>
+      #buttonBar {
+        clear: both;
+        padding-top: 12px;
+      }
+      #column2 input[type=text] {
+        width: 32px;
+      }
+      #labForm label {
+        float: left;
+        text-align: right;
+        width: 100px;
+        font-weight: bold;
+        margin-right: 6px;
+      }
+      #column2 label {
+        width: 100px;
+      }
+      #testSubjectPanel {
+        float: left;
+        width: 256px;
+      }
+      ul#testSubject {
+        list-style: none;
+        padding: 0;
+      }
+      #otherSubjectPanel {
+        float: left;
+        width: 256px;
+        display: none;
+      }
+      ul#otherSubject {
+        list-style: none;
+        padding: 0;
+      }
+     </style>
+  </head>
+
+  <body class="fancy">
+
+    <div id="pageContainer">
+      <div id="pageContent">
+
+        <h1>jQuery UI Sortables Lab</h1>
+
+        <div data-module="Control Panel">
+          <form action="" id="labForm">
+            <h3>Sortable options</h3>
+            <table id="optionsContainer" cellpadding="0" border="0" cellspacing="0">
+              <tr>
+              <td id="column1">
+                <div>
+                  <label>axis:</label>
+                  <input type="radio" name="axis" value="" checked="checked" class="radioOption">none
+                  <input type="radio" name="axis" value="x" class="radioOption">x
+                  <input type="radio" name="axis" value="y" class="radioOption">y
+                </div>
+                <div>
+                  <label>containment:</label>
+                  <input type="radio" name="containment" value="" checked="checked" class="radioOption">none
+                  <input type="radio" name="containment" value="document" class="radioOption">document
+                  <input type="radio" name="containment" value="parent" class="radioOption">parent
+                  <input type="radio" name="containment" value="window" class="radioOption">window
+                </div>
+                <div>
+                  <label>cursor:</label>
+                  <input type="radio" name="cursor" value="" checked="checked" class="radioOption">none
+                  <input type="radio" name="cursor" value="crosshair" class="radioOption">crosshair
+                  <input type="radio" name="cursor" value="wait" class="radioOption">wait
+                  <input type="radio" name="cursor" value="help" class="radioOption">help
+                </div>
+                <div>
+                  <label>helper:</label>
+                  <input type="radio" name="helper" value="" checked="checked" class="radioOption">unspecified
+                  <input type="radio" name="helper" value="original" class="radioOption">original
+                  <input type="radio" name="helper" value="clone" class="radioOption">clone
+                </div>
+                <div>
+                  <label>revert:</label>
+                  <input type="radio" name="revert" value="" checked="checked" class="booleanOption">unspecified
+                  <input type="radio" name="revert" value="true" class="booleanOption">true
+                  <input type="radio" name="revert" value="false" class="booleanOption">false
+                </div>
+                <div>
+                  <label>scroll:</label>
+                  <input type="radio" name="scroll" value="" checked="checked" class="booleanOption">unspecified
+                  <input type="radio" name="scroll" value="true" class="booleanOption">true
+                  <input type="radio" name="scroll" value="false" class="booleanOption">false
+                </div>
+                <div>
+                  <label>tolerance:</label>
+                  <input type="radio" name="tolerance" value="" checked="checked" class="radioOption">none
+                  <input type="radio" name="tolerance" value="intersect" class="radioOption">intersect
+                  <input type="radio" name="tolerance" value="pointer" class="radioOption">pointer
+                  <input type="radio" name="tolerance" value="fit" class="radioOption">fit
+                  <input type="radio" name="tolerance" value="touch" class="radioOption">touch
+                </div>
+              </td>
+              <td id="column2">
+                <div>
+                  <label>cursorAt:</label>
+                  top <input type="text" id="cursorAtTopField" name="cursorAtTop"/>
+                  left <input type="text" id="cursorAtLeftField" name="cursorAtLeft"/>
+                </div>
+                <div>
+                  <label>distance:</label>
+                  <input type="text" id="distanceField" name="distance" class="valueOption"/> px
+                </div>
+                <div>
+                  <label>grid:</label>
+                  <input type="text" id="gridXField" name="gridX"/> by
+                  <input type="text" id="gridYField" name="gridY"/>
+                </div>
+                <div>
+                  <label>opacity:</label>
+                  <input type="text" id="opacityField" name="opacity" class="valueOption"/> (0.0 through 1.0)
+                </div>
+                <div>
+                  <label>connectWith:</label>
+                  <input type="checkbox" id="connectWithControl"> other list
+                </div>
+              </td>
+              </tr>
+            </table>
+            <div id="buttonBar">
+              <button type="button" id="applyButton" class="green90x24">Apply</button>
+              <button type="button" id="disableButton" class="green90x24">Disable</button>
+              <button type="button" id="enableButton" class="green90x24">Enable</button>
+              <button type="reset" id="resetButton" class="green90x24">Reset</button>
+            </div>
+          </form>
+          <div>
+            <h3>Executed command:</h3>
+            <div id="commandDisplay">---</div>
+          </div>
+        </div>
+
+        <div data-module="Test Subjects">
+          <div id="testSubjectPanel">
+            <ul id="testSubject">
+              <li id="subject_1"><img src="sortable-1.jpg" alt="sortable 1"></li>
+              <li id="subject_2"><img src="sortable-2.jpg" alt="sortable 2"></li>
+              <li id="subject_3"><img src="sortable-3.jpg" alt="sortable 3"></li>
+              <li id="subject_4"><img src="sortable-4.jpg" alt="sortable 4"></li>
+              <li id="subject_5"><img src="sortable-5.jpg" alt="sortable 5"></li>
+              <li id="subject_6"><img src="sortable-6.jpg" alt="sortable 6"></li>
+            </ul>
+          </div>
+          <div id="otherSubjectPanel">
+            <ul id="otherSubject">
+              <li><img src="other-1.png" alt="other 1"></li>
+              <li><img src="other-2.png" alt="other 2"></li>
+              <li><img src="other-3.png" alt="other 3"></li>
+              <li><img src="other-4.png" alt="other 4"></li>
+            </ul>
+          </div>
+          <div class="separator"></div>
+        </div>
+
+        <div data-module="Console">
+          <div>
+            <label>toArray:</label> <span id="resultToArray">---</span>
+          </div>
+          <div>
+            <label>serialize:</label> <span id="resultSerialize">---</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </body>
+</html>
+

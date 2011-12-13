@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>jQuery UI Tabs Lab</title>
+    <link rel="stylesheet" type="text/css" href="../../styles/core.css">
+    <link rel="stylesheet" type="text/css" href="../../themes/cupertino/jquery-ui-1.8.custom.css">
+    <script type="text/javascript" src="../../scripts/jquery-1.4.js"></script>
+    <script type="text/javascript" src="../../scripts/jquery-ui-1.8.custom.min.js"></script>
+    <script type="text/javascript" src="../../scripts/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../../scripts/jqia2.support.js"></script>
+    <script type="text/javascript">
+      $(function(){
+
+        $('#labForm').submit(function(){ return false; } );
+
+        $('#applyButton').click(function(){
+          $('.testSubject').tabs('destroy');
+          var options = {};
+          $.collectOptions(options);
+          //
+          // special case options
+          //
+          if ($('#disabledValueField').val() != '') options.disabled = $.map($('#disabledValueField').val().split(','),function(value){ return parseInt(value); });
+          if ($('#cookieOnControl').attr('checked')) options.cookie = {expires:7};
+          //
+          // Display the command
+          //
+          var cleansed = $.extend({},options);
+          if (cleansed.spinner != null) cleansed.spinner = cleansed.spinner.replace('<img','&lt;img');
+          $('#commandDisplay').html("$('.testSubject').tabs("+$.forDisplay(cleansed)+");");
+          //
+          // Register events
+          //
+          options.select = options.load = options.show = options.add = options.remove = options.enable = options.disable = function(event,info){
+            var stuff = {
+              index: info.index,
+              tab: (info.tab == null) ? 'null' : (info.tab.tagName + '#' + info.tab.id),
+              panel: (info.panel == null) ? 'null' : (info.panel.tagName + '#' + info.panel.id)
+            };
+            say(event.type + ' ' + $.forDisplay(stuff));
+          };
+          //
+          // Make the test subject into tabs
+          //
+          $('.testSubject').tabs(options);
+        });
+
+        $('#disableButton').click(function(){
+          $('.testSubject').tabs('disable');
+          $('#commandDisplay').html("$('.testSubject').tabs('disable');");
+        });
+
+        $('#enableButton').click(function(){
+          $('.testSubject').tabs('enable');
+          $('#commandDisplay').html("$('.testSubject').tabs('enable');");
+        });
+
+        $('#labForm').bind('reset',function(){
+          $('#commandDisplay').html('&mdash;');
+          $('#console').html('');
+          $('.testSubject').tabs('destroy');
+          $('#labForm').reset();
+        });
+
+      });
+
+    </script>
+
+    <style>
+      #optionsContainer>div {
+        float: left;
+        width: 400px;
+      }
+      #buttonBar {
+        clear: both;
+        padding-top: 12px;
+      }
+      #column2 input[type=text] {
+        width: 32px;
+      }
+      .testSubjectContainer .body {
+        height: 256px;
+      }
+      #controlPanel label {
+        float: left;
+        text-align: right;
+        width: 9em;
+        font-weight: bold;
+        margin-right: 6px;
+      }
+      #column2 label {
+        width: 144px;
+      }
+      #console div {
+        clear: both;
+      }
+      #console label {
+        width: 6em;
+      }
+    </style>
+  </head>
+
+  <body class="fancy">
+
+    <div id="pageContainer">
+      <div id="pageContent">
+
+        <h1>jQuery UI Tabs Lab</h1>
+
+        <div id="controlPanel" data-module="Control Panel">
+          <form action="" id="labForm">
+
+            <h3>Tab options</h3>
+
+            <div>
+              <label>cache:</label>
+              <input type="radio" name="cache" value="" checked="checked" class="booleanOption">unspecified
+              <input type="radio" name="cache" value="true" class="booleanOption">true
+              <input type="radio" name="cache" value="false" class="booleanOption">false
+            </div>
+
+            <div>
+              <label>collapsible:</label>
+              <input type="radio" name="collapsible" value="" checked="checked" class="booleanOption">unspecified
+              <input type="radio" name="collapsible" value="true" class="booleanOption">true
+              <input type="radio" name="collapsible" value="false" class="booleanOption">false
+            </div>
+
+            <div>
+              <label>cookie:</label>
+              <input type="radio" name="cookie" value="" checked="checked">unspecified
+              <input type="radio" name="cookie" id="cookieOnControl" value="click"> { expires: 7 }
+            </div>
+
+            <div>
+              <label>disabled:</label>
+              <input type="text" id="disabledValueField"> (array of indexes, e.g. <tt>[0,1]</tt>)
+            </div>
+
+            <div>
+              <label>event:</label>
+              <input type="radio" name="event" value="" checked="checked" class="radioOption">unspecified
+              <input type="radio" name="event" value="click" class="radioOption">click
+              <input type="radio" name="event" value="mouseover" class="radioOption">mouseover
+            </div>
+
+            <div>
+              <label>selected:</label>
+              <input type="radio" name="selected" value="" checked="checked" class="radioOption">unspecified
+              <input type="radio" name="selected" value="0" class="radioOption">0
+              <input type="radio" name="selected" value="1" class="radioOption">1
+              <input type="radio" name="selected" value="2" class="radioOption">2
+              <input type="radio" name="selected" value="3" class="radioOption">3
+              <input type="radio" name="selected" value="-1" class="radioOption">-1
+            </div>
+
+            <div>
+              <label>spinner:</label>
+              <input type="radio" name="spinner" value="" checked="checked" class="radioOption">unspecified
+              <input type="radio" name="spinner" value="Working..." class="radioOption"> text
+              <input type="radio" name="spinner" value="<img src='spinner.gif'>" class="radioOption"> image
+            </div>
+
+            <div id="buttonBar">
+              <button type="button" id="applyButton" class="green90x24">Apply</button>
+              <button type="button" id="disableButton" class="green90x24">Disable</button>
+              <button type="button" id="enableButton" class="green90x24">Enable</button>
+              <button type="reset" id="resetButton" class="green90x24">Reset</button>
+            </div>
+
+          </form>
+
+          <div>
+            <h3>Executed commands:</h3>
+            <div id="commandDisplay">---</div>
+          </div>
+        </div>
+
+        <div id="testSubjectContainer" data-module="Test Subject">
+
+          <div class="testSubject">
+            <ul>
+              <li><a href="#tab_puppies" id="tab_for_puppies">Puppies</a></li>
+              <li><a href="#tab_flowers" id="tab_for_flowers">Flowers</a></li>
+              <li><a href="tab_food.html" id="tab_for_food">Food</a></li>
+              <li><a href="/jqia2/lengthyTab" id="tab_for_slow"><span>Slow</span></a></li>
+            </ul>
+            <div id="tab_puppies">
+              <img src="puppy-1.jpg"><img src="puppy-2.jpg"><img src="puppy-3.jpg"><img src="puppy-4.jpg"><img src="puppy-5.jpg"><img src="puppy-6.jpg">
+            </div>
+            <div id="tab_flowers">
+              <img src="flower-1.jpg"><img src="flower-2.jpg"><img src="flower-3.jpg"><img src="flower-4.jpg"><img src="flower-5.jpg"><img src="flower-6.jpg">
+            </div>
+          </div>
+
+        </div>
+
+        <div id="console" data-module="Console">
+        </div>
+
+      </div>
+    </div>
+
+  </body>
+</html>
+

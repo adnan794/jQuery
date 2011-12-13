@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Photomatic Test</title>
+    <link rel="stylesheet" type="text/css"
+          href="../../styles/core.css">
+    <link rel="stylesheet" type="text/css" href="photomatic.css">
+    <script type="text/javascript"
+            src="../../scripts/jquery-1.4.js"></script>
+    <script type="text/javascript"
+            src="jquery.jqia.photomatic.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        $('#thumbnailsPane img').photomatic({
+          photoElement: '#photoDisplay',
+          previousControl: '#previousButton',
+          nextControl: '#nextButton',
+          firstControl: '#firstButton',
+          lastControl: '#lastButton',
+          playControl: '#playButton',
+          delay: 1000
+        });
+      });
+    </script>
+  </head>
+
+  <body class="fancy">
+
+    <div id="pageContainer">
+      <div id="pageContent">
+
+        <h1>Photomatic Tester</h1>
+
+        <div id="thumbnailsPane">
+          <img src="thumbnails/IMG_2212.jpg"/>
+          <img src="thumbnails/IMG_2222.jpg"/>
+          <img src="thumbnails/IMG_2227.jpg"/>
+          <img src="thumbnails/IMG_2235.jpg"/>
+          <img src="thumbnails/IMG_2259.jpg"/>
+          <img src="thumbnails/IMG_2269.jpg"/>
+          <img src="thumbnails/IMG_2273.jpg"/>
+          <img src="thumbnails/IMG_2287.jpg"/>
+          <img src="thumbnails/IMG_2292.jpg"/>
+          <img src="thumbnails/IMG_2296.jpg"/>
+          <img src="thumbnails/IMG_2298.jpg"/>
+          <img src="thumbnails/IMG_2302.jpg"/>
+          <img src="thumbnails/IMG_2310.jpg"/>
+          <img src="thumbnails/IMG_2319.jpg"/>
+          <img src="thumbnails/IMG_2331.jpg"/>
+          <img src="thumbnails/IMG_2335.jpg"/>
+        </div>
+
+        <div id="photoPane">
+          <img id="photoDisplay" src=""/>
+        </div>
+
+        <div id="buttonBar">
+          <img src="button.placeholder.png" id="firstButton"
+               alt="First" title="First photo"/>
+          <img src="button.placeholder.png" id="previousButton"
+               alt="Previous" title="Previous photo"/>
+          <img src="button.placeholder.png" id="playButton"
+               alt="Play/Pause" title="Play or pause slideshow"/>
+          <img src="button.placeholder.png" id="nextButton"
+               alt="Next" title="Next photo"/>
+          <img src="button.placeholder.png" id="lastButton"
+               alt="Last" title="Last photo"/>
+        </div>
+
+      </div>
+    </div>
+
+  </body>
+</html>

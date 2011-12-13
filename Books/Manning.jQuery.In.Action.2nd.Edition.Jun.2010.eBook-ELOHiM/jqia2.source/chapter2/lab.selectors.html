@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>jQuery Selectors Lab Page</title>
+    <link rel="stylesheet" type="text/css" href="../styles/core.css">
+    <style type="text/css">
+      div#selectorPane {
+        float: left;
+        width: 45%;
+      }
+
+      input#selectorField {
+        width: 90%;
+      }
+
+      div#samplePane {
+        float: right;
+        width: 53%;
+      }
+
+      div#sampleDOM {
+        background-color: white;
+      }
+
+      div#codePane {
+        clear: both;
+      }
+
+      div#sampleDOMCode pre {
+        background-color: white;
+      }
+
+      div#resultsPane {
+        margin-top: 12px;
+        display: none;
+      }
+
+      span#jqueryStatement {
+        color: maroon;
+        font-family: monospace;
+      }
+
+      .wrappedElement {
+        border: 1px solid red;
+        background-color: pink;
+      }
+
+      img.wrappedElement {
+        border-width: 2px;
+      }
+
+      div.buttonBar {
+        margin-top: 8px;
+      }
+    </style>
+    <script type="text/javascript" src="../scripts/jquery-1.4.js"></script>
+    <script type="text/javascript" src="../scripts/jqia2.support.js"></script>
+    <script type="text/javascript" src="elements.js"></script>
+    <script type="text/javascript">
+      $(function() {
+
+        $.get(
+          'dom.sample.html',
+          function(data){
+            $('#sampleDOM').html(data);
+            $('#sampleDOMCode pre').html(data.replace(/</g,'&lt;').replace(/>/g,'&gt;'));
+          });
+
+        $('form#selectorForm').submit(function(){
+          $('.wrappedElement','#sampleDOM').removeClass('wrappedElement');
+          $('#resultingElements').html('');
+          var selector = $.trim($('#selectorField').val());
+          if (selector.length == 0) return false;
+          var wrappedSet = $(selector,'#sampleDOM');
+          wrappedSet.addClass('wrappedElement');
+          $('#jqueryStatement').html('$("'+selector+'").addClass("wrappedElement");');
+          var elements = wrappedSet.elementsForDisplay();
+          var labelText = elements.length + ' matching element' + (elements.length == 1 ? '' : 's') + ':';
+          $('label[for=resultingElements]').html(labelText);
+          $.each(elements,function(){
+            $('#resultingElements').append($('<div>'+this+'</div>'));
+          });
+          $('#resultsPane').fadeIn('slow');
+          return false;
+        });
+
+      });
+    </script>
+  </head>
+
+  <body class="fancy">
+
+    <div id="pageContainer">
+      <div id="pageContent">
+
+        <h1>jQuery Selectors Lab Page</h1>
+
+        <div data-module="Selector" data-module-id="selectorPane">
+          <form id="selectorForm" action="#">
+
+            <p>Type a selector into the text field below and press the Apply button.</p>
+
+            <label for="selectorField">Selector:</label><br/>
+            <!--textarea id="selectorField" rows="3"></textarea><br/-->
+            <input type="text" id="selectorField"/>
+
+            <div class="buttonBar">
+              <button type="submit" class="green90x24">Apply</button>
+            </div>
+
+          </form>
+
+          <div id="resultsPane">
+            <p>
+              <label for="jqueryStatement">jQuery statement:</label><br/>
+              <span id ="jqueryStatement"></span>
+            </p>
+            <p>
+              <label for="resultingElements">X</label>
+              <div id="resultingElements"></div>
+            </p>
+          </div>
+
+        </div>
+
+        <div data-module="DOM Sample" data-module-id="samplePane">
+          <div id="sampleDOM">
+          </div>
+        </div>
+
+        <div data-module="DOM Sample Code" data-module-id="codePane">
+          <div id="sampleDOMCode">
+            <pre></pre>
+          </div>
+        </div>
+
+        <div class="footer">jQuery in Action, 2nd edition, sample code<br/>Bear Bibeault and Yehuda Katz</div>
+
+      </div>
+    </div>
+
+  </body>
+</html>

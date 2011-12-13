@@ -1,0 +1,2 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<c:set var="test" value="If you can read this, your Tomcat server is running."/>

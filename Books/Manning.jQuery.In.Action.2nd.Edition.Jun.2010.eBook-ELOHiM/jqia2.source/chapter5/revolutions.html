@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Kepler's dilemma</title>
+    <link rel="stylesheet" type="text/css" href="../styles/core.css">
+    <script type="text/javascript" src="../scripts/jquery-1.4.js"></script>
+    <script type="text/javascript" src="../scripts/jqia2.support.js"></script>
+    <script type="text/javascript">
+      $(function() {
+
+        $('#startButton').click(function(){
+          say(1);
+          $("img[alt='moon']").animate({left:'+=256'},2500);
+          say(2);
+          $("img[alt='moon']").animate({top:'+=256'},2500);
+          say(3);
+          $("img[alt='moon']").animate({left:'-=256'},2500);
+          say(4);
+          $("img[alt='moon']").animate({top:'-=256'},2500);
+          say(5);
+        });
+
+        /* callback alternative
+        $('#startButton').click(function(){
+          $("img[alt='moon']").animate({left:'+=256'},2500,function(){
+            $("img[alt='moon']").animate({top:'+=256'},2500,function(){
+              $("img[alt='moon']").animate({left:'-=256'},2500,function(){
+                $("img[alt='moon']").animate({top:'-=256'},2500);
+              });
+            });
+          });
+        });
+        */
+
+      });
+    </script>
+    <style type="text/css">
+      img {
+        position: absolute;
+      }
+
+      img[alt='moon'] {
+        top: 0;
+        left: 0;
+      }
+
+      img[alt='earth'] {
+        top: 128px;
+        left: 128px;
+      }
+
+      #controlPanel {
+        margin-left: 400px;
+        border: 2px solid #d5f0ba;
+        width: 256px;
+        padding: 8px;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <img src="moon.png" alt="moon"/>
+    <img src="earth.png" alt="earth"/>
+
+    <div id="controlPanel">
+      <button type="button" id="startButton" class="green90x24">Start</button>
+      <div id="console"></div>
+    </div>
+
+  </body>
+
+</html>

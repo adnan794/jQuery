@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>jQuery UI Positioning Lab</title>
+    <link rel="stylesheet" type="text/css" href="../styles/core.css">
+    <link rel="stylesheet" type="text/css" href="../themes/cupertino/jquery-ui-1.8.custom.css">
+    <script type="text/javascript" src="../scripts/jquery-1.4.js"></script>
+    <script type="text/javascript" src="../scripts/jquery-ui-1.8.custom.min.js"></script>
+    <script type="text/javascript" src="../scripts/jqia2.support.js"></script>
+    <script type="text/javascript">
+      $(function(){
+
+        $('#labForm').submit(function(){ return false; } );
+
+        $('#applyButton').click(function(){
+
+          var options = {};
+          options.my = $('#my1Control').val() + ' ' + $('#my2Control').val();
+          options.at = $('#at1Control').val() + ' ' + $('#at2Control').val();
+          options.of = '#testTarget';
+
+          var offset1 = $('#offset1Control').val();
+          var offset2 = $('#offset2Control').val();
+          if (offset1.length > 0 || offset2.length > 0) {
+            options.offset =
+                ((offset1.length > 0) ? offset1 : '') +
+                ((offset1.length > 0 && offset2.length > 0) ? ' ' : '' ) +
+                ((offset2.length > 0) ? offset2 : '');
+          }
+          //
+          // Display the command
+          //
+          $('#commandDisplay').html(
+            "$('.testSubject').position("+$.forDisplay(options)+");"
+          );
+          //
+          // Apply
+          //
+          $('.testSubject').position(options);
+        });
+
+        $('#labForm').bind('reset',function(){
+          this.reset();
+          restoreTestSubjects();
+          $('#commandDisplay').empty();
+        });
+
+        function restoreTestSubjects() {
+          $('.testSubject,.testSubject *').removeAttr('style');
+        }
+
+      });
+
+    </script>
+
+    <style>
+      #buttonBar {
+        clear: both;
+        padding-top: 12px;
+      }
+      #testSubjectContainer {
+        position: relative;
+      }
+      .testSubject {
+        width: 28px;
+        height: 127px;
+        border: 1px dotted silver;
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+      #testTarget {
+        width: 224px;
+        height: 323px;
+        border: 1px dotted silver;
+        margin: 0 auto;
+      }
+      #controlPanel label {
+        margin-right: 6px;
+        font-weight: normal;
+      }
+      #controlPanel label:first-child {
+        float: left;
+        text-align: right;
+        width: 6em;
+        font-weight: bold;
+      }
+      [type="number"] { width: 4em; }
+    </style>
+  </head>
+
+  <body class="fancy">
+
+    <div id="pageContainer">
+      <div id="pageContent">
+
+        <h1>jQuery UI Positioning Lab</h1>
+
+        <div id="controlPanel" data-module="Control Panel">
+          <form action="" id="labForm">
+
+            <h3>Positioning options</h3>
+
+            <div>
+              <label for="my1Control">my:</label>
+              <select id="my1Control">
+                <option>left</option>
+                <option>center</option>
+                <option>right</option>
+              </select>
+              <select id="my2Control">
+                <option>top</option>
+                <option>center</option>
+                <option>bottom</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="at1Control">at:</label>
+              <select id="at1Control">
+                <option>left</option>
+                <option>center</option>
+                <option>right</option>
+              </select>
+              <select id="at2Control">
+                <option>top</option>
+                <option>center</option>
+                <option>bottom</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="offset1Control">offset:</label>
+              <input type="number" id="offset1Control">
+              <input type="number" id="offset2Control">
+            </div>
+
+            <div id="buttonBar">
+              <button type="button" id="applyButton" class="green90x24">Apply</button>
+              <button type="reset" id="resetButton" class="green90x24">Reset</button>
+            </div>
+
+          </form>
+
+          <div>
+            <h3>Executed command:</h3>
+            <div id="commandDisplay">---</div>
+          </div>
+        </div>
+
+        <div id="testSubjectContainer" data-module="Test Subjects">
+
+          <div id="testTarget"><img src="images/donkey.png" width="224" height="323"></div>
+
+          <div class="testSubject"><img src="images/tail.png" width="28" height="127"></div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </body>
+</html>
+

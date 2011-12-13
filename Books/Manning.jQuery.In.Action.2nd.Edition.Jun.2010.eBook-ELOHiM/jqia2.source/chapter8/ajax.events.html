@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ajax Events Test</title>
+    <link rel="stylesheet" type="text/css" href="../styles/core.css"/>
+    <script type="text/javascript" src="../scripts/jquery-1.4.js"></script>
+    <script type="text/javascript" src="../scripts/jqia2.support.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        $('body').bind(
+          'ajaxStart ajaxStop ajaxSend ajaxSuccess ajaxError ajaxComplete',
+          function(event){ say(event.type); }
+        );
+
+        $('button').click(function(event){
+          $('#console').empty();
+          var count = parseInt($('#countControl').val());
+          for (var n = 0; n < count; n++) {
+            $.get($(event.target).attr('data-url'));
+          }
+        });
+
+      });
+    </script>
+  </head>
+
+  <body>
+
+    <label for="countControl"># of requests</label>: <input type="text" id="countControl" size="3" value="1"/>
+
+    <button type="button" id="goodButton" class="green90x24" data-url="someResource">Good</button>
+    <button type="button" id="badButton" class="green90x24" data-url="badResource">Bad</button>
+
+  </body>
+</html>

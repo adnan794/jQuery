@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Progess Bar Test</title>
+    <link rel="stylesheet" type="text/css" href="../../styles/core.css">
+    <link rel="stylesheet" type="text/css" href="../../themes/cupertino/jquery-ui-1.8.custom.css">
+    <script type="text/javascript" src="../../scripts/jquery-1.4.js"></script>
+    <script type="text/javascript" src="../../scripts/jquery-ui-1.8.custom.min.js"></script>
+    <script type="text/javascript" src="../../scripts/jqia2.support.js"></script>
+    <script type="text/javascript">
+      $(function() {
+
+        $('#progressBar').progressbar();
+        $('#progressBar').progressbar('value',-10);
+
+        alert($('#progressBar').progressbar('value'));
+
+
+      });
+    </script>
+    <style type="text/css">
+      #progressBar {
+        width: 256px;
+        height: 18px;
+      }
+    </style>
+  </head>
+
+  <body>
+
+      <div>
+        <div id="progressBar"></div>
+      </div>
+
+  </body>
+</html>

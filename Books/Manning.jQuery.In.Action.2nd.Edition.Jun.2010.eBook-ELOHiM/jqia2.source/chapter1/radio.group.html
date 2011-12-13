@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Radio Group Example</title>
+    <link rel="stylesheet" type="text/css" href="../styles/core.css"/>
+    <style type="text/css">
+      #result tt {
+        color: maroon;
+        font-size: 1.1em;
+      }
+      form>div {
+        margin-top: 0.9em;
+      }
+    </style>
+    <script type="text/javascript" src="../scripts/jquery-1.4.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        $('#testButton').click(function(){
+          var checkedValue = $('[name="someRadioGroup"]:radio:checked').val();
+          $('#result').html('The radio element with value <tt>' + checkedValue + '</tt> is checked.');
+        });
+      });
+    </script>
+  </head>
+  <body>
+
+    <form>
+      <div>
+        <label for="radioYes">What is your answer?</label>
+        <input type="radio" name="someRadioGroup" id="radioYes" value="yes" checked="checked"/> Yes
+        <input type="radio" name="someRadioGroup" id="radioNo" value="no"/> No
+        <input type="radio" name="someRadioGroup" id="radioMaybe" value="maybe"/> Maybe
+        <input type="radio" name="someRadioGroup" id="radioConfused" value="confused"/> I dunno
+      </div>
+      <div><button type="button" id="testButton"class="green90x24">Which?</button></div>
+      <div id="result"></div>
+    </form>
+
+  </body>
+</html>

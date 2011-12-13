@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Button visual styles</title>
+    <link rel="stylesheet" type="text/css" href="../../themes/cupertino/jquery-ui-1.8.custom.css">
+    <script type="text/javascript" src="../../scripts/jquery-1.4.js"></script>
+    <script type="text/javascript" src="../../scripts/jquery-ui-1.8.custom.min.js"></script>
+    <script type="text/javascript">
+      $(function() {
+
+        $('#buttonsPane button,#buttonsPane input,#buttonsPane span,#buttonsPane div').button();
+        $('#checkboxPane').buttonset();
+        $('#radioPane').buttonset();
+        $('#testPane').buttonset();
+
+      });
+    </script>
+    <style type="text/css">
+      body {padding: 32px;}
+      h1 {font-size:1.1em;}
+      h2 {font-size:1em;}
+      button {border: 2px outset;}
+      .pane {margin-bottom: 8px;}
+    </style>
+  </head>
+
+  <body>
+
+    <h1>Button Appearance Test</h1>
+
+    <h3>Individual buttons</h3>
+
+    <div id="buttonsPane" class="pane">
+      <button type="button">A &lt;button&gt; element</button>
+      <input type="button" value="An &lt;input&gt; button">
+      <input type="image" src="image.png">
+      <span>hi</span>
+      <div>hi</div>
+    </div>
+
+    <h3>Checkbox group</h3>
+
+    <div id="checkboxPane" class="pane">
+      <input type="checkbox" name="checkboxGroup" value="1" id="checkbox1"> <label for="checkbox1">Checkbox 1</label>
+      <input type="checkbox" name="checkboxGroup" value="2" id="checkbox2"> <label for="checkbox2">Checkbox 2</label>
+      <input type="checkbox" name="checkboxGroup" value="3" id="checkbox3"> <label for="checkbox3">Checkbox 3</label>
+    </div>
+
+    <h3>Radio group</h3>
+
+    <div id="radioPane" class="pane">
+      <input type="radio" name="radioGroup" value="1" id="radio1"> <label for="radio1">Radio 1</label>
+      <input type="radio" name="radioGroup" value="2" id="radio2"> <label for="radio2">Radio 2</label>
+      <input type="radio" name="radioGroup" value="3" id="radio3"> <label for="radio3">Radio 3</label>
+    </div>
+
+    <h3>Just buttons group</h3>
+
+    <div id="testPane" class="pane">
+      <button type="button">A &lt;button&gt; element</button>
+      <button type="button">A &lt;button&gt; element</button>
+      <button type="button">A &lt;button&gt; element</button>
+    </div>
+
+  </body>
+</html>

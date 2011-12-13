@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>jQuery UI Effects Lab</title>
+    <link rel="stylesheet" type="text/css" href="../styles/core.css">
+    <link rel="stylesheet" type="text/css" href="../themes/cupertino/jquery-ui-1.8.custom.css">
+    <script type="text/javascript" src="../scripts/jquery-1.4.js"></script>
+    <script type="text/javascript" src="../scripts/jquery-ui-1.8.custom.min.js"></script>
+    <script type="text/javascript" src="../scripts/jqia2.support.js"></script>
+    <script type="text/javascript">
+      $(function(){
+
+        $('#labForm').submit(function(){ return false; } );
+
+        $('#effectControl').change(function(){
+          $('[value=""]',this).remove();
+          $('#optionsPane > div:visible').hide('puff');
+          $('#optionsPane > div :input').attr('disabled',true);
+          $('#optionsPane div.' + $(this).val()).show('slide');
+          $('#optionsPane div.' + $(this).val() +' :input').attr('disabled',false);
+        });
+
+        $('#speedContainer').click(function(event){
+          $('#speedValueControl').attr('disabled',!$('#speedControlCustom').is(':checked'));
+        });
+
+        $('#applyButton').click(function(){
+
+          var effectName = $('#effectControl').val();
+          if (effectName == '') return;
+
+          var speed = $('#speedContainer :radio:checked').val();
+          if (speed=='custom') {
+            speed = parseInt($('#speedValueControl').val());
+            if (isNaN(speed)||(speed<0)) speed='normal';
+          }
+          if (speed == 'none') speed = null;
+
+          var options = {};
+          $.collectOptions(options);
+
+          if (effectName == 'transfer') { options.to = '#applyButton'; }
+          
+          //
+          // Display the command
+          //
+          $('#commandDisplay').html(
+            "$('.testSubject').effect('" + effectName + "',"+$.forDisplay(options)+","+$.forDisplay(speed)+");"
+          );
+          //
+          // Apply effect
+          //
+          $('.testSubject').effect(effectName,options,speed,function(){ var subject = this; setTimeout(restoreTestSubjects,2000); });
+        });
+
+        $('#labForm').bind('reset',function(){
+          if ($('#effectControl option[value=""]').length == 0) $('<option>',{ value: '' }).insertBefore($('#effectControl option:first')).html('&mdash;choose one&mdash;');
+          this.reset();
+          restoreTestSubjects();
+          $('#commandDisplay').empty();
+          $('#optionsPane div').hide();
+        });
+
+        function restoreTestSubjects() {
+          $('.testSubject,.testSubject *').removeAttr('style');
+        }
+
+      });
+
+    </script>
+
+    <style>
+      #optionsPane > div { display: none; }
+      #buttonBar {
+        clear: both;
+        padding-top: 12px;
+      }
+      #testSubjectContainer {
+        height: 128px;
+      }
+      .testSubject {
+        width: 120px;
+        height: 80px;
+        padding: 12px;
+        border: 1px solid black;
+        float: left;
+        margin-right: 12px;
+      }
+      #controlPanel label {
+        margin-right: 6px;
+        font-weight: normal;
+      }
+      #controlPanel label:first-child {
+        float: left;
+        text-align: right;
+        width: 6em;
+        font-weight: bold;
+      }
+      [type="number"] { width: 4em; }
+      .ui-effects-transfer { border: 4px #deb887 solid; }
+    </style>
+  </head>
+
+  <body class="fancy">
+
+    <div id="pageContainer">
+      <div id="pageContent">
+
+        <h1>jQuery UI Effects Lab</h1>
+
+        <div id="controlPanel" data-module="Control Panel">
+          <form action="" id="labForm">
+
+            <h3>Effect options</h3>
+
+            <div>
+              <label for="effectControl">Effect:</label>
+              <select id="effectControl">
+                <option value="">&mdash;choose one&mdash;</option>
+                <option value="blind">Blind</option>
+                <option value="bounce">Bounce</option>
+                <option value="clip">Clip</option>
+                <option value="drop">Drop</option>
+                <option value="explode">Explode</option>
+                <option value="fade">Fade</option>
+                <option value="fold">Fold</option>
+                <option value="highlight">Highlight</option>
+                <option value="puff">Puff</option>
+                <option value="pulsate">Pulsate</option>
+                <option value="scale">Scale</option>
+                <option value="shake">Shake</option>
+                <option value="size">Size</option>
+                <option value="slide">Slide</option>
+                <option value="transfer">Transfer</option>
+              </select>
+            </div>
+
+            <div id="speedPane">
+              <div id="speedContainer">
+                <label>Speed:</label>
+                <input type="radio" name="speed" value="none" checked id="speedControlNone"/> <label for="speedControlNone">None</label>
+                <input type="radio" name="speed" value="slow" id="speedControlSlow"/> <label for="speedControlSlow">Slow</label>
+                <input type="radio" name="speed" value="normal" id="speedControlNormal"/> <label for="speedControlNormal">Normal</label>
+                <input type="radio" name="speed" value="fast" id="speedControlFast"/> <label for="speedControlFast">Fast</label>
+                <input type="radio" name="speed" value="custom" id="speedControlCustom"/> <label for="speedControlCustom">Milliseconds:</label>
+                <input type="text" name="speedValue" id="speedValueControl" disabled="disabled"/>
+              </div>
+            </div>
+
+
+            <div id="optionsPane">
+
+              <div class="blind bounce clip scale slide">
+                <label>direction:</label>
+                <input type="radio" value="" id="directionControlNone" name="direction" class="radioOption" checked> <label for="directionControlNone">unspecified</label>
+                <input type="radio" value="vertical" id="directionControlVertical" name="direction" class="radioOption"> <label for="directionControlVertical">vertical</label>
+                <input type="radio" value="horizontal" id="directionControlHorizontal" name="direction" class="radioOption"> <label for="directionControlHorizontal">horizontal</label>
+              </div>
+
+              <div class="drop shake">
+                <label>direction:</label>
+                <input type="radio" value="" id="directionControl4None" name="direction" class="radioOption" checked> <label for="directionControl4None">unspecified</label>
+                <input type="radio" value="left" id="directionControl4Left" name="direction" class="radioOption"> <label for="directionControl4Left">left</label>
+                <input type="radio" value="right" id="directionControl4Right" name="direction" class="radioOption"> <label for="directionControl4Right">right</label>
+                <input type="radio" value="up" id="directionControl4Up" name="direction" class="radioOption"> <label for="directionControl4Up">up</label>
+                <input type="radio" value="down" id="directionControl4Down" name="direction" class="radioOption"> <label for="directionControl4Down">down</label>
+              </div>
+
+              <div class="blind clip drop explode fold highlight pulsate puff slide">
+                <label>mode:</label>
+                <input type="radio" value="" id="modeControlNone" name="mode" class="radioOption" checked> <label for="modeControlNone">unspecified</label>
+                <input type="radio" value="hide" id="modeControlHide" name="mode" class="radioOption"> <label for="modeControlHide">hide</label>
+                <input type="radio" value="show" id="modeControlShow" name="mode" class="radioOption"> <label for="modeControlShow">show</label>
+              </div>
+
+              <div class="bounce">
+                <label>mode:</label>
+                <input type="radio" value="" id="modeControl2None" name="mode" class="radioOption" checked> <label for="modeControl2None">unspecified</label>
+                <input type="radio" value="hide" id="modeControl2Hide" name="mode" class="radioOption"> <label for="modeControl2Hide">hide</label>
+                <input type="radio" value="show" id="modeControl2Show" name="mode" class="radioOption"> <label for="modeControl2Show">show</label>
+                <input type="radio" value="effect" id="modeControl2Effect" name="mode" class="radioOption"> <label for="modeControl2Effect">effect</label>
+              </div>
+
+              <div class="bounce pulsate shake">
+                <label>times:</label>
+                <input type="number" id="timesControl" name="times" class="evalOption" disabled>
+              </div>
+
+              <div class="bounce shake slide">
+                <label>distance:</label>
+                <input type="number" id="distanceControl" name="distance" class="evalOption" disabled>
+              </div>
+
+              <div class="explode">
+                <label>pieces:</label>
+                <input type="number" id="piecesControl" name="pieces" class="evalOption" disabled>
+              </div>
+
+              <div class="fold">
+                <label>horizFirst:</label>
+                <input type="radio" name="horizFirst" value="" checked="checked" class="booleanOption">unspecified
+                <input type="radio" name="horizFirst" value="true" class="booleanOption">true
+                <input type="radio" name="horizFirst" value="false" class="booleanOption">false
+              </div>
+
+              <div class="fold">
+                <label>size:</label>
+                <input type="number" id="sizeControl" name="size" class="evalOption" disabled>
+              </div>
+
+              <div class="highlight">
+                <label>color:</label>
+                <input type="text" id="colorControl" name="color" class="valueOption" disabled>
+              </div>
+
+              <div class="puff scale">
+                <label>percent:</label>
+                <input type="number" id="percentControl" name="percent" class="evalOption" disabled>
+              </div>
+
+              <div class="scale size">
+                <label>scale:</label>
+                <input type="radio" value="" id="scaleControlNone" name="scale" class="radioOption" checked> <label for="scaleControlNone">unspecified</label>
+                <input type="radio" value="box" id="scaleControlBox" name="scale" class="radioOption"> <label for="scaleControlBox">box</label>
+                <input type="radio" value="content" id="scaleControlContent" name="scale" class="radioOption"> <label for="scaleControlContent">content</label>
+                <input type="radio" value="both" id="scaleControlBoth" name="scale" class="radioOption"> <label for="scaleControlBoth">both</label>
+              </div>
+
+
+
+
+            </div>
+
+            <div id="buttonBar">
+              <button type="button" id="applyButton" class="green90x24">Apply</button>
+              <button type="reset" id="resetButton" class="green90x24">Reset</button>
+            </div>
+
+          </form>
+
+          <div>
+            <h3>Executed command:</h3>
+            <div id="commandDisplay">---</div>
+          </div>
+        </div>
+
+        <div id="testSubjectContainer" data-module="Test Subjects">
+
+          <div class="testSubject">
+            &laquo;To err is human &mdash; and to blame it on a computer is even more so.&raquo;
+          </div>
+
+          <div class="testSubject">
+            <img src="images/hibiscus.small.jpg" width="120" height="80">
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </body>
+</html>
+

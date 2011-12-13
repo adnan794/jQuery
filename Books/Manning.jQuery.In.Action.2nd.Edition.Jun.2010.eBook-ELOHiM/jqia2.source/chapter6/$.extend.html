@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>$.extend() Example</title>
+    <link rel="stylesheet" type="text/css" href="../styles/core.css">
+    <script type="text/javascript" src="../scripts/jquery-1.4.js"></script>
+    <script type="text/javascript" src="../scripts/jqia2.support.js"></script>
+    <script type="text/javascript">
+      var target =  { a: 1, b: 2, c: 3 };
+      var source1 = { c: 4, d: 5, e: 6 };
+      var source2 = { e: 7, f: 8, g: 9 };
+
+      $(function(){
+        $('#targetBeforeDisplay').html($.forDisplay(target));
+        $('#source1Display').html($.forDisplay(source1));
+        $('#source2Display').html($.forDisplay(source2));
+        $.extend(target,source1,source2);
+        $('#targetAfterDisplay').html($.forDisplay(target));
+      });
+    </script>
+
+    <style>
+      label { float: left; width: 120px; text-align: right; }
+      p { clear: both; }
+      label + span { margin-left: 6px; }
+      .module { width: 360px }
+    </style>
+  </head>
+
+  <body>
+
+    <div data-module="$.extend() Example">
+      <p>
+        <label>target (before) =</label>
+        <span id="targetBeforeDisplay"></span>
+      </p>
+      <p>
+        <label>source1 =</label>
+        <span id="source1Display"></span>
+      </p>
+      <p>
+        <label>source2 =</label>
+        <span id="source2Display"></span>
+      </p>
+      <p>
+        <label>target (after) =</label>
+        <span id="targetAfterDisplay"></span>
+      </p>
+    </div>
+
+  </body>
+</html>

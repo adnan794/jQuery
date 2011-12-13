@@ -1,0 +1,270 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <title>jQuery UI Selectables Lab</title>
+    <link rel="stylesheet" type="text/css" href="../../themes/cupertino/jquery-ui-1.8.custom.css">
+    <link rel="stylesheet" type="text/css" href="../../styles/core.css">
+    <script type="text/javascript" src="../../scripts/jquery-1.4.js"></script>
+    <script type="text/javascript" src="../../scripts/jquery-ui-1.8.custom.min.js"></script>
+    <script type="text/javascript" src="../../scripts/jqia2.support.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        $('#labForm').submit(function(){ return false; } );
+        $('#applyButton').click(function(){
+          restore();
+          $('#console').html('');
+          var options = {};
+          $.collectOptions(options);
+          //
+          // Display
+          //
+          $('#commandDisplay').html("$('#testSubject').selectable("+$.forDisplay(options)+");");
+          //
+          // Callbacks
+          //
+          options.selected = function(event,info) {
+            say('selected: ' + $('td:first-child',info.selected).html());
+          };
+          options.selecting = function(event,info){
+            say('selecting: ' + $('td:first-child',info.selecting).html());
+          };
+          options.start = function(event,info){
+            say('start');
+          };
+          options.stop = function(event,info){
+            var selections$ = $('#testSubject .ui-selected');
+            if ($('[name="filter"]:checked').val() == 'tr') {
+              say('stop, ' + selections$.length + ' movies are selected:');
+              selections$.each(function(){ say('&nbsp;&nbsp;' + $('td:first-child',this).html()); });
+            }
+
+          };
+          options.unselected = function(event,info){
+            say('unselected: ' + $('td:first-child',info.unselected).html());
+          };
+          options.unselecting = function(event,info){
+            say('unselecting: ' + $('td:first-child',info.unselecting).html());
+          };
+          //
+          // Apply
+          //
+          $('#testSubject').selectable(options);
+        });
+
+        $('#disableButton').click(function(){
+          $('#testSubject').selectable('disable');
+          $('#commandDisplay').html("$('#testSubject').selectable('disable');");
+        });
+
+        $('#enableButton').click(function(){
+          $('#testSubject').selectable('enable');
+          $('#commandDisplay').html("$('#testSubject').selectable('enable');");
+        });
+
+        $('#labForm').bind('reset',function(){
+          restore();
+          $('form')[0].reset();
+          $('#commandDisplay').html("$('#testSubject').selectable('destroy');");
+        });
+
+        function restore() {
+          $('#testSubject').selectable('destroy');
+          $('.ui-selectee') .removeClass("ui-selectee").removeData("selectable-item");
+          $('#console').html('');
+          $('#testSubject *').removeClass('ui-selected').removeClass('ui-selectee');
+        }
+
+      });
+    </script>
+    <style>
+      #distanceField {
+        width: 3em;
+      }
+      #buttonBar {
+        clear: both;
+        padding-top: 12px;
+      }
+      label {
+        float: left;
+        text-align: right;
+        width: 11em;
+        font-weight: bold;
+        margin-right: 6px;
+      }
+      #console label {
+        width: 12em !important;
+      }
+      #console div {
+        clear: both;
+      }
+      #console label {
+        width: 120px;
+      }
+      table#testSubject {
+        background-color: black;
+        width: 95%;
+      }
+      table#testSubject th {
+        background-color: silver;
+        border: 2px outset silver;
+        font-size: 0.9em;
+      }
+      table#testSubject tr {
+        background-color: white;
+      }
+      table#testSubject td {
+        background-color: transparent;
+        padding: 1px 12px;
+        font-size: 0.8em;
+        text-align: center;
+      }
+      table#testSubject td:first-child {
+        text-align: left;
+      }
+      .ui-selectee {
+        cursor: pointer;
+      }
+      #testSubject .ui-selectee:hover {
+        background-color: #ffe4c4;
+      }
+      #testSubject .ui-selected {
+        background-color: pink !important;
+      }
+    </style>
+    <!-- Hack for IE which doesn't believe that tr elements have background colors. sigh. -->
+    <!--[if IE]>
+    <style type="text/css">
+      table#testSubject td {
+        background-color: white;
+      }
+      #testSubject .ui-selectee:hover td {
+        background-color: #ffe4c4;
+      }
+      #testSubject .ui-selected td {
+        background-color: pink !important;
+      }
+    </style>
+    <![endif]-->
+
+  </head>
+
+  <body class="fancy">
+    <div id="pageContainer">
+      <div id="pageContent">
+
+        <h1>jQuery UI Selectables Lab</h1>
+
+        <div data-module="Control Panel">
+          <form action="" id="labForm">
+            <h3>Selectables options</h3>
+            <div id="optionsContainer">
+              <!--div>
+                <label>distance:</label>
+                <input type="text" id="distanceField" name="distance" class="valueOption"/> px
+              </div-->
+              <div id="filterPane">
+                <label for="firstFilterRadio">filter:</label>
+                <input type="radio" name="filter" value="tr" class="radioOption" checked id="firstFilterRadio"/> tr
+                <input type="radio" name="filter" value="td" class="radioOption"/> td
+                <input type="radio" name="filter" value="span" class="radioOption"/> span
+              </div>
+              <div>
+                <label>tolerance:</label>
+                <input type="radio" name="tolerance" value="" checked="checked" class="radioOption"> unspecified
+                <input type="radio" name="tolerance" value="touch" class="radioOption"> touch
+                <input type="radio" name="tolerance" value="fit" class="radioOption"> fit
+              </div>
+            </div>
+            <div id="buttonBar">
+              <button type="button" id="applyButton" class="green90x24">Apply</button>
+              <button type="button" id="disableButton" class="green90x24">Disable</button>
+              <button type="button" id="enableButton" class="green90x24">Enable</button>
+              <button type="reset" id="resetButton" class="green90x24">Reset</button>
+            </div>
+          </form>
+          <div>
+            <h3>Executed command:</h3>
+            <div id="commandDisplay">---</div>
+          </div>
+        </div>
+
+        <div data-module="Test Subject" id="testSubjectContainer">
+
+          <table id="testSubject" cellspacing="1" border="0">
+            <tr>
+              <th>Name</th> <th>Year</th> <th>Binder</th> <th>Page</th> <th>Slot</th> <th>Viewed?</th>
+            </tr>
+            <tr>
+              <td><span>20 Million Miles to Earth</span></td> <td><span>1957</span></td> <td><span>4</span></td> <td><span>12</span></td> <td><span>1</span></td> <td><span>X</span></td>
+            </tr>
+            <tr>
+              <td><span>2001: A Space Odyssey</span></td> <td><span>1968</span></td> <td><span>2</span></td> <td><span>20</span></td> <td><span>4</span></td> <td><span>X</span></td>
+            </tr>
+            <tr>
+              <td><span>Alien</span></td> <td><span>1979</span></td> <td><span>23</span></td> <td><span>1</span></td> <td><span>3</span></td> <td><span>X</span></td>
+            </tr>
+            <tr>
+              <td><span>Aliens</span></td> <td><span>1986</span></td> <td><span>23</span></td> <td><span>1</span></td> <td><span>4</span></td> <td><span>X</span></td>
+            </tr>
+            <tr>
+              <td><span>Alien Nation</span></td> <td><span>1988</span></td> <td><span>17</span></td> <td><span>2</span></td> <td><span>2</span></td> <td><span>X</span></td>
+            </tr>
+            <tr>
+              <td><span>Blade Runner</span></td> <td><span>1982</span></td> <td><span>12</span></td> <td><span>22</span></td> <td><span>4</span></td> <td><span>X</span></td>
+            </tr>
+            <tr>
+              <td><span>Close Encounters of the Third Kind</span></td> <td><span>1977</span></td> <td><span>3</span></td> <td><span>5</span></td> <td><span>1</span></td> <td><span>X</span></td>
+            </tr>
+            <tr>
+              <td><span>Cocoon</span></td> <td><span>1985</span></td> <td><span>11</span></td> <td><span>13</span></td> <td><span>3</span></td> <td><span>X</span></td>
+            </tr>
+            <tr>
+              <td><span>Communion</span></td> <td><span>1989</span></td> <td><span>4</span></td> <td><span>2</span></td> <td><span>1</span></td> <td><span></span></td>
+            </tr>
+            <tr>
+              <td><span>Creature from the Black Lagoon</span></td> <td><span>1954</span></td> <td><span>6</span></td> <td><span>1</span></td> <td><span>4</span></td> <td><span>X</span></td>
+            </tr>
+            <tr>
+              <td><span>Day of the Triffids</span></td> <td><span>1962</span></td> <td><span>7</span></td> <td><span>17</span></td> <td><span>2</span></td> <td><span>X</span></td>
+            </tr>
+            <tr>
+              <td><span>Dragonslayer</span></td> <td><span>1981</span></td> <td><span>8</span></td> <td><span>3</span></td> <td><span>3</span></td> <td><span>X</span></td>
+            </tr>
+            <tr>
+              <td><span>Dreamscape</span></td> <td><span>1984</span></td> <td><span>10</span></td> <td><span>3</span></td> <td><span>1</span></td> <td><span>X</span></td>
+            </tr>
+            <tr>
+              <td><span>Dune</span></td> <td><span>1984</span></td> <td><span>7</span></td> <td><span>4</span></td> <td><span>1</span></td> <td><span>X</span></td>
+            </tr>
+            <tr>
+              <td><span>Dune</span></td> <td><span>2000</span></td> <td><span>9</span></td> <td><span>2</span></td> <td><span>4</span></td> <td><span>X</span></td>
+            </tr>
+            <tr>
+              <td><span>Enemy Mine</span></td> <td><span>1984</span></td> <td><span>1</span></td> <td><span>17</span></td> <td><span>2</span></td> <td><span>X</span></td>
+            </tr>
+            <tr>
+              <td><span>Fahrenheit 451</span></td> <td><span>1966</span></td> <td><span>3</span></td> <td><span>4</span></td> <td><span>2</span></td> <td><span>X</span></td>
+            </tr>
+            <tr>
+              <td><span>Fantastic Voyage</span></td> <td><span>1966</span></td> <td><span>7</span></td> <td><span>14</span></td> <td><span>2</span></td> <td><span>X</span></td>
+            </tr>
+            <tr>
+              <td><span>Firestarter</span></td> <td><span>1984</span></td> <td><span>9</span></td> <td><span>11</span></td> <td><span>4</span></td> <td><span>X</span></td>
+            </tr>
+            <tr>
+              <td><span>Forbidden Planet</span></td> <td><span>1956</span></td> <td><span>7</span></td> <td><span>10</span></td> <td><span>2</span></td> <td><span>X</span></td>
+            </tr>
+            <tr>
+              <td><span>Gorgo</span></td> <td><span>1961</span></td> <td><span>3</span></td> <td><span>11</span></td> <td><span>2</span></td> <td><span>X</span></td>
+            </tr>
+          </table>
+
+        </div>
+
+        <div data-module="Console" id="console"></div>
+
+      </div>
+    </div>
+
+  </body>
+</html>

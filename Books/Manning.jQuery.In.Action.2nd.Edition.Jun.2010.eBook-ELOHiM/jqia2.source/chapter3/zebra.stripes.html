@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Disco Zebra Stripes!</title>
+    <link rel="stylesheet" type="text/css" href="../styles/core.css"/>
+    <script type="text/javascript" src="../scripts/jquery-1.4.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        $("table tr:nth-child(even)").addClass("striped");
+        $("table").mouseover(swapThem).mouseout(swapThem);
+      });
+
+      function swapThem() {
+        $('tr').toggleClass('striped');
+      }
+    </script>
+
+    <style type="text/css">
+      body,td {
+        font-size: 10pt;
+      }
+      table {
+        background-color: black;
+        border: 1px black solid;
+        border-collapse: collapse;
+        width: 480px;
+      }
+      th {
+        border: 2px ridge maroon;
+        background-color: maroon;
+        color: white;
+        padding: 3px 12px;
+      }
+      tr {
+        background-color: white;
+        margin: 1px;
+      }
+      tr.striped {
+        background-color: gold;
+      }
+      td {
+        padding: 1px 8px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <table>
+      <tr>
+        <th>Year</th>
+        <th>Make</th>
+        <th>Model</th>
+      </tr>
+      <tr>
+        <td>1965</td>
+        <td>Ford</td>
+        <td>Mustang</td>
+      </tr>
+      <tr>
+        <td>1970</td>
+        <td>Toyota</td>
+        <td>Corolla</td>
+      </tr>
+      <tr>
+        <td>1979</td>
+        <td>AMC</td>
+        <td>Jeep CJ-5</td>
+      </tr>
+      <tr>
+        <td>1983</td>
+        <td>Ford</td>
+        <td>EXP</td>
+      </tr>
+      <tr>
+        <td>1985</td>
+        <td>Dodge</td>
+        <td>Daytona</td>
+      </tr>
+      <tr>
+        <td>1990</td>
+        <td>Chrysler</td>
+        <td>Jeep Wrangler Sahara</td>
+      </tr>
+      <tr>
+        <td>1995</td>
+        <td>Ford</td>
+        <td>Ranger</td>
+      </tr>
+      <tr>
+        <td>1997</td>
+        <td>Chrysler</td>
+        <td>Jeep Wrangler Sahara</td>
+      </tr>
+      <tr>
+        <td>2000</td>
+        <td>Chrysler</td>
+        <td>Jeep Wrangler Sahara</td>
+      </tr>
+      <tr>
+        <td>2005</td>
+        <td>Chrysler</td>
+        <td>Jeep Wrangler Unlimited</td>
+      </tr>
+      <tr>
+        <td>2007</td>
+        <td>Dodge</td>
+        <td>Caliber R/T</td>
+      </tr>
+    </table>
+  </body>
+</html>

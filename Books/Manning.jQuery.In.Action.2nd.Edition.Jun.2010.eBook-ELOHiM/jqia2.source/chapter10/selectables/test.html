@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Selectables Destroy Test</title>
+    <script type="text/javascript" src="../../scripts/jquery-1.4.js"></script>
+    <script type="text/javascript" src="../../scripts/jquery-ui-1.8.custom.min.js"></script>
+    <script type="text/javascript">
+
+      $(function(){
+
+        $('#testSubject').selectable({ filter: 'div.type1' });
+        $('#testSubject').selectable('destroy');
+        $('.ui-selectee') .removeClass("ui-selectee").removeData("selectable-item");
+        $('#testSubject').selectable({ filter: 'div.type2' });
+
+      });
+    </script>
+
+    <style>
+      .ui-selectee { background-color: silver; cursor: pointer; }
+      .ui-selected { background-color: pink; }
+    </style>
+  </head>
+
+  <body>
+    <h1>Selectables Destroy Test</h1>
+
+    <div id="testSubject">
+
+      <div class="type1">111111</div>
+      <div class="type2">222222</div>
+      <div class="type1">111111</div>
+      <div class="type2">222222</div>
+      <div class="type1">111111</div>
+      <div class="type2">222222</div>
+      <div class="type1">111111</div>
+      <div class="type2">222222</div>
+      <div class="type1">111111</div>
+      <div class="type2">222222</div>
+
+    </div>
+
+  </body>
+</html>

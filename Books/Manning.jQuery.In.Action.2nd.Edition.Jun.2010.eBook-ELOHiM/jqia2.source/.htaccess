@@ -1,0 +1,4 @@
+RewriteEngine on
+
+# /action/xxx -> /chapter8/bootcloset/actions/xxx.php
+RewriteRule ^action/(.*) /jqia2/chapter8/bootcloset/actions/$1.php [L]

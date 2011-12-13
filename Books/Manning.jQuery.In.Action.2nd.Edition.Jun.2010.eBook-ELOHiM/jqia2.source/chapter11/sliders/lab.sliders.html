@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>jQuery UI Sliders Lab</title>
+    <link rel="stylesheet" type="text/css" href="../../styles/core.css">
+    <link rel="stylesheet" type="text/css" href="../../themes/cupertino/jquery-ui-1.8.custom.css">
+    <script type="text/javascript" src="../../scripts/jquery-1.4.js"></script>
+    <script type="text/javascript" src="../../scripts/jquery-ui-1.8.custom.min.js"></script>
+    <script type="text/javascript" src="../../scripts/jqia2.support.js"></script>
+    <script type="text/javascript">
+      $(function(){
+
+        $('#labForm').submit(function(){ return false; } );
+
+        $('#applyButton').click(function(){
+          $('.testSubject').slider('destroy');
+          var options = {};
+          $('#valueDisplay').html('&mdash;');
+          $.collectOptions(options);
+          //
+          // special case options
+          //
+          if ($('[name="animate"]:checked').val() != '') {
+            options.animate = $('[name="animate"]:checked').val();
+            if (options.animate === 'true') options.animate = true;
+            if (options.animate === 'false') options.animate = false;
+            if (options.animate === 'value') options.animate = parseInt($('#animateValueField').val());
+          }
+          if ($('#minValueField').val() != '') options.min = parseInt($('#minValueField').val());
+          if ($('#maxValueField').val() != '') options.max = parseInt($('#maxValueField').val());
+          if (options.range==='true') options.range = true;
+          if ($('#stepValueField').val() != '') options.step = parseInt($('#stepValueField').val());
+          if ($('#valueValueField').val() != '') options.value = parseInt($('#valueValueField').val());
+          if ($('#valuesValueField').val() != '') options.values = $.map($('#valuesValueField').val().split(','),function(value){ return parseInt(value); });
+          var useImageHandle = $('#imageHandleControl').attr('checked');
+          //
+          // Display the command
+          //
+          var command = "$('.testSubject').slider("+$.forDisplay(options)+");";
+          if (useImageHandle) command += "<br>$('.testSubject .ui-slider-handle').addClass('fancy')";
+          $('#commandDisplay').html(command);
+          //
+          // Register events
+          //
+          options.start = options.stop = options.slide = options.change = function(event,info){
+            if (info.values!=null) {
+              say(event.type + ", values = " + $.forDisplay(info.values));
+              $('#valueDisplay').html($.forDisplay(info.values));
+            }
+            else {
+              say(event.type + ", value = " + info.value);
+              $('#valueDisplay').html(info.value);
+            }
+          };
+          //
+          // Apply
+          //
+          $('.testSubject').empty().slider(options);
+          if (useImageHandle) $('.testSubject .ui-slider-handle').addClass('fancy');
+          var values = $('.testSubject .ui-slider-handle').length > 1 ? $.forDisplay($('.testSubject').slider('values')) : $('.testSubject').slider('value');
+          $('#valueDisplay').html(values);
+        });
+
+        $('#disableButton').click(function(){
+          $('.testSubject').slider('disable');
+          $('#commandDisplay').html("$('.testSubject').slider('disable');");
+        });
+
+        $('#enableButton').click(function(){
+          $('.testSubject').slider('enable');
+          $('#commandDisplay').html("$('.testSubject').slider('enable');");
+        });
+
+        $('#enableButton').click(function(){
+          $('.testSubject').slider('enable');
+          $('#commandDisplay').html("$('.testSubject').slider('enable');");
+        });
+
+        $('#labForm').bind('reset',function(){
+          $('.testSubject').slider('destroy');
+          $('#commandDisplay,#valueDisplay').html('&mdash;');
+          $('#console').html('');
+        });
+
+        $('[name="animate"]').change(function(){
+          $('#animateValueField').attr('disabled',!$('[name="animate"][value="value"]').attr('checked'));
+          if ($(this).attr('value') == 'value') $('#animateValueField')[0].focus();
+        });
+
+      });
+
+    </script>
+
+    <style>
+      #optionsContainer>div {
+        float: left;
+        width: 400px;
+      }
+      #buttonBar {
+        clear: both;
+        padding-top: 12px;
+      }
+      #column2 input[type=text] {
+        width: 32px;
+      }
+      .testSubjectContainer .body {
+        height: 256px;
+      }
+      #controlPanel label {
+        float: left;
+        text-align: right;
+        width: 9em;
+        font-weight: bold;
+        margin-right: 6px;
+      }
+      #column2 label {
+        width: 144px;
+      }
+      .testSubject.ui-slider-horizontal {
+        width: 320px;
+        height: 8px;
+      }
+      .testSubject.ui-slider-vertical {
+        height: 108px;
+        width: 8px;
+      }
+      .testSubject a.ui-slider-handle.fancy {
+        background: transparent no-repeat url('handle.png') 0 0;
+        border-width: 0;
+      }
+      #minValueField,#maxValueField,#stepValueField,#valueValueField,#animateValueField {
+        width: 4em;
+      }
+      #displayPane {
+        margin-top: 12px;
+      }
+      .ui-slider .ui-widget-header { background: orange; }
+    </style>
+  </head>
+
+  <body class="fancy">
+
+    <div id="pageContainer">
+      <div id="pageContent">
+
+        <h1>jQuery UI Sliders Lab</h1>
+
+        <div id="controlPanel" data-module="Control Panel">
+          <form action="" id="labForm">
+
+            <h3>Slider options</h3>
+
+            <div>
+              <label>animate:</label>
+              <input type="radio" name="animate" value="" checked>unspecified
+              <input type="radio" name="animate" value="false">false
+              <input type="radio" name="animate" value="true">true
+              <input type="radio" name="animate" value="slow">slow
+              <input type="radio" name="animate" value="normal">normal
+              <input type="radio" name="animate" value="fast">fast
+              <input type="radio" name="animate" value="value">
+              <input type="text" id="animateValueField" disabled>
+            </div>
+
+            <div>
+              <label>orientation:</label>
+              <input type="radio" name="orientation" value="" checked="checked" class="radioOption">unspecified
+              <input type="radio" name="orientation" value="horizontal" class="radioOption">horizontal
+              <input type="radio" name="orientation" value="vertical" class="radioOption">vertical
+            </div>
+
+            <div>
+              <label>min:</label>
+              <input type="text" id="minValueField">
+            </div>
+
+            <div>
+              <label>max:</label>
+              <input type="text" id="maxValueField">
+            </div>
+
+            <div>
+              <label>range:</label>
+              <input type="radio" name="range" value="" checked="checked" class="radioOption">unspecified
+              <input type="radio" name="range" value="min" class="radioOption">min
+              <input type="radio" name="range" value="max" class="radioOption">max
+              <input type="radio" name="range" value="true" class="radioOption">true
+            </div>
+
+            <div>
+              <label>step:</label>
+              <input type="text" id="stepValueField">
+            </div>
+
+            <div>
+              <label>value:</label>
+              <input type="text" id="valueValueField">
+            </div>
+
+            <div>
+              <label>values:</label>
+              <input type="text" id="valuesValueField">
+            </div>
+
+            <div>
+              <label>&nbsp;</label>
+              <input type="checkbox" id="imageHandleControl">&nbsp;Use image handle
+            </div>
+
+            <div id="buttonBar">
+              <button type="button" id="applyButton" class="green90x24">Apply</button>
+              <button type="button" id="disableButton" class="green90x24">Disable</button>
+              <button type="button" id="enableButton" class="green90x24">Enable</button>
+              <button type="reset" id="resetButton" class="green90x24">Reset</button>
+            </div>
+
+          </form>
+
+          <div>
+            <h3>Executed commands:</h3>
+            <div id="commandDisplay">&mdash;</div>
+          </div>
+        </div>
+
+        <div id="testSubjectContainer" data-module="Test Subjects">
+
+          <div class="testSubject"></div>
+          <div id="displayPane">Value(s): <span id="valueDisplay">&mdash;</span></div>
+
+        </div>
+
+        <div id="console" data-module="Console">
+        </div>
+
+      </div>
+    </div>
+
+  </body>
+</html>
+

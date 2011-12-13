@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Collapsible Module &mdash; Take 2</title>
+    <link rel="stylesheet" type="text/css" href="../styles/core.css">
+    <link rel="stylesheet" type="text/css" href="module.css">
+    <script type="text/javascript" src="../scripts/jquery-1.4.js"></script>
+    <script type="text/javascript">
+      $(function() {
+
+        $('div.caption img').click(function(){
+          $(this).closest('div.module').find('div.body').toggle();
+        });
+
+      });
+    </script>
+  </head>
+
+  <body>
+
+    <div class="module">
+      <div class="caption">
+        <span>Module Caption</span>
+        <img src="rollup.gif" alt="rollup" title="rolls up this module"/>
+      </div>
+      <div class="body">
+        Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+        Aliquam eget enim id neque aliquet porttitor. Suspendisse
+        nisl enim, nonummy ac, nonummy ut, dignissim ac, justo.
+        Aenean imperdiet semper nibh. Vivamus ligula. In in ipsum
+        sed neque vehicula rhoncus. Nam faucibus pharetra nisi.
+        Integer at metus. Suspendisse potenti. Vestibulum ante
+        ipsum primis in faucibus orci luctus et ultrices posuere
+        cubilia Curae; Proin quis eros at metus pretium elementum.
+      </div>
+    </div>
+
+  </body>
+
+</html>

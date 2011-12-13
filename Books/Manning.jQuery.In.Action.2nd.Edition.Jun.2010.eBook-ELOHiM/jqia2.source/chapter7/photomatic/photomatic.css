@@ -1,0 +1,59 @@
+#pageContainer {
+  width: 900px;
+  background-color: transparent;
+  border-width: 0;
+}
+
+h1 {
+  margin: 0 0 32px 64px !important;
+}
+
+#thumbnailsPane {
+  float: left;
+  width: 175px;
+  height: 462px;
+  overflow: auto;
+  border: 2px ridge #00457b;
+  margin-right: 10px;
+  background-color: black;
+}
+
+#buttonBar {
+  clear: both;
+  text-align: center;
+  margin-left: 188px;
+}
+
+#buttonBar img {
+  cursor: pointer;
+}
+
+#photoDisplay {
+  border: 1px solid black;
+  background-color: white;
+  padding: 16px 16px 24px 16px;
+}
+
+img#firstButton {
+  background: url(button.first.png) no-repeat;
+}
+
+img#lastButton {
+  background: url(button.last.png) no-repeat;
+}
+
+img#previousButton {
+  background: url(button.previous.png) no-repeat;
+}
+
+img#nextButton {
+  background: url(button.next.png) no-repeat;
+}
+
+img#playButton {
+  background: url(button.play.png) no-repeat;
+}
+
+img#playButton.photomatic-playing {
+  background: url(button.pause.png) no-repeat;
+}

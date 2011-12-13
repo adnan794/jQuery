@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>jQuery UI Dialogs Lab</title>
+    <link rel="stylesheet" type="text/css" href="../../styles/core.css">
+    <link rel="stylesheet" type="text/css" href="../../themes/cupertino/jquery-ui-1.8.custom.css">
+    <script type="text/javascript" src="../../scripts/jquery-1.4.js"></script>
+    <script type="text/javascript" src="../../scripts/jquery-ui-1.8.custom.min.js"></script>
+    <script type="text/javascript" src="../../scripts/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../../scripts/jqia2.support.js"></script>
+    <script type="text/javascript">
+      $(function(){
+
+        $('#labForm').submit(function(){ return false; } );
+
+        $('#applyButton').click(function(){
+          $('.testSubject').dialog('destroy');
+          var options = {};
+          $.collectOptions(options);
+          //
+          // special cases and fixups
+          //
+          if ($('[name="buttons"]:checked').length > 0) {
+            options.buttons = {};
+            $('[name="buttons"]:checked').each(function(event){
+              options.buttons[$(this).val()] = function(event) {
+                say('You clicked the ' + $(event.target).text() + ' button' );
+              }
+            });
+          }
+          if (options.height == 'value') options.height = parseInt($('#heightValue').val());
+          if (options.position == 'value') options.position = eval($('#positionValue').val());
+          //
+          // Display the command
+          //
+          $('#commandDisplay').html("$('.testSubject').dialog("+$.forDisplay(options)+");");
+          //
+          // Register events
+          //
+          options.beforeClose = options.close = options.drag = options.dragStart = options.dragStop = options.focus = options.open = options.resize = options.resizeStart = options.resizeStop = function(event,info){
+            say(event.type);
+            console.log(info);
+            return true;
+          };
+          //
+          // Make the test subject into a dialog
+          //
+          $('.testSubject').dialog(options);
+        });
+
+        $('#disableButton').click(function(){
+          $('.testSubject').dialog('disable');
+          $('#commandDisplay').html("$('.testSubject').dialog('disable');");
+        });
+
+        $('#enableButton').click(function(){
+          $('.testSubject').dialog('enable');
+          $('#commandDisplay').html("$('.testSubject').dialog('enable');");
+        });
+
+        $('#openButton').click(function(){
+          $('.testSubject').dialog('open');
+          $('#commandDisplay').html("$('.testSubject').dialog('open');");
+        });
+
+        $('#labForm').bind('reset',function(){
+          $('#commandDisplay').html('&mdash;');
+          $('#console').html('');
+          $('.testSubject').dialog('destroy');
+          $('#labForm')[0].reset();
+        });
+
+        $('[name="height"]').change(function(){
+          $('#heightValue').attr('disabled',!$('#heightValueControl').attr('checked'));
+          if ($('#heightValueControl').attr('checked')) $('#heightValue')[0].focus();
+        });
+
+        $('[name="position"]').change(function(){
+          $('#positionValue').attr('disabled',!$('#positionValueControl').attr('checked'));
+          if ($('#positionValueControl').attr('checked')) $('#positionValue')[0].focus();
+        });
+
+      });
+
+    </script>
+
+    <style>
+      #optionsContainer>div {
+        float: left;
+        width: 400px;
+      }
+      #buttonBar {
+        clear: both;
+        padding-top: 12px;
+      }
+      #column2 input[type=text] {
+        width: 32px;
+      }
+      .testSubjectContainer .body {
+        height: 256px;
+      }
+      #controlPanel label {
+        float: left;
+        text-align: right;
+        width: 9em;
+        font-weight: bold;
+        margin-right: 6px;
+      }
+      #column2 label {
+        width: 144px;
+      }
+      #console div {
+        clear: both;
+      }
+      #console label {
+        width: 6em;
+      }
+      input.numeric {
+        width: 4em;
+      }
+      #positionValue {
+        width: 6em;
+      }
+      [name="title"] {
+        width: 32em;
+      }
+      iframe {
+        margin-right: 64px;
+      }
+    </style>
+  </head>
+
+  <body class="fancy">
+
+    <div id="pageContainer">
+      <div id="pageContent">
+
+        <h1>jQuery UI Dialogs Lab</h1>
+
+        <div id="controlPanel" data-module="Control Panel">
+          <form action="" id="labForm">
+
+            <h3>Dialog options</h3>
+
+            <div>
+              <label>autoOpen:</label>
+              <input type="radio" name="autoOpen" value="" checked="checked" class="booleanOption">unspecified
+              <input type="radio" name="autoOpen" value="true" class="booleanOption">true
+              <input type="radio" name="autoOpen" value="false" class="booleanOption">false
+            </div>
+
+            <div>
+              <label>buttons:</label>
+              <input type="checkbox" name="buttons" value="OK">OK
+              <input type="checkbox" name="buttons" value="Yes">Yes
+              <input type="checkbox" name="buttons" value="No">No
+              <input type="checkbox" name="buttons" value="Whatever">Whatever
+            </div>
+
+            <div>
+              <label>closeOnEscape:</label>
+              <input type="radio" name="closeOnEscape" value="" checked="checked" class="booleanOption">unspecified
+              <input type="radio" name="closeOnEscape" value="true" class="booleanOption">true
+              <input type="radio" name="closeOnEscape" value="false" class="booleanOption">false
+            </div>
+
+            <div>
+              <label>closeText:</label>
+              <input type="text" name="closeText" class="valueOption">
+            </div>
+
+            <div>
+              <label>draggable:</label>
+              <input type="radio" name="draggable" value="" checked="checked" class="booleanOption">unspecified
+              <input type="radio" name="draggable" value="true" class="booleanOption">true
+              <input type="radio" name="draggable" value="false" class="booleanOption">false
+            </div>
+
+            <div>
+              <label>height:</label>
+              <input type="radio" name="height" value="" checked="checked" class="radioOption">unspecified
+              <input type="radio" name="height" value="auto" class="radioOption">auto
+              <input type="radio" name="height" value="value" class="radioOption" id="heightValueControl">
+              <input type="text" id="heightValue" class="numeric" disabled> (in pixels)
+            </div>
+
+            <div>
+              <label>hide:</label>
+              <input type="radio" name="hide" value="" checked="checked" class="radioOption">unspecified
+              <input type="radio" name="hide" value="slide" class="radioOption"> slide
+              <input type="radio" name="hide" value="fade" class="radioOption"> fade
+              <input type="radio" name="hide" value="what" class="radioOption"> what
+              <input type="radio" name="hide" value="ever" class="radioOption"> ever
+            </div>
+
+            <div>
+              <label>minHeight:</label>
+              <input type="text" name="minHeight" class="evalOption numeric">
+              <label style="float:none">maxHeight:</label>
+              <input type="text" name="maxHeight" class="evalOption numeric">
+              <label style="float:none">minWidth:</label>
+              <input type="text" name="minWidth" class="evalOption numeric">
+              <label style="float:none">maxWidth:</label>
+              <input type="text" name="maxWidth" class="evalOption numeric">
+            </div>
+
+            <div>
+              <label>modal:</label>
+              <input type="radio" name="modal" value="" checked="checked" class="booleanOption">unspecified
+              <input type="radio" name="modal" value="true" class="booleanOption">true
+              <input type="radio" name="modal" value="false" class="booleanOption">false
+            </div>
+
+            <div>
+              <label>position:</label>
+              <input type="radio" name="position" value="" checked="checked" class="radioOption">unspecified
+              <input type="radio" name="position" value="center" class="radioOption"> center
+              <input type="radio" name="position" value="left" class="radioOption"> left
+              <input type="radio" name="position" value="right" class="radioOption"> right
+              <input type="radio" name="position" value="top" class="radioOption"> top
+              <input type="radio" name="position" value="bottom" class="radioOption"> bottom
+              <input type="radio" name="position" value="value" class="radioOption" id="positionValueControl">
+              <input type="text" id="positionValue" disabled> [left,top]
+            </div>
+
+            <div>
+              <label>resizable:</label>
+              <input type="radio" name="resizable" value="" checked="checked" class="booleanOption">unspecified
+              <input type="radio" name="resizable" value="true" class="booleanOption">true
+              <input type="radio" name="resizable" value="false" class="booleanOption">false
+            </div>
+
+            <div>
+              <label>show:</label>
+              <input type="radio" name="show" value="" checked="checked" class="radioOption">unspecified
+              <input type="radio" name="show" value="slide" class="radioOption"> slide
+              <input type="radio" name="show" value="fade" class="radioOption"> fade
+              <input type="radio" name="show" value="what" class="radioOption"> what
+              <input type="radio" name="show" value="ever" class="radioOption"> ever
+            </div>
+
+            <div>
+              <label>title:</label>
+              <input type="text" name="title" class="valueOption">
+            </div>
+
+            <div>
+              <label>width:</label>
+              <input type="text" name="width" class="evalOption numeric"> (in pixels)
+            </div>
+
+            <div id="buttonBar">
+              <button type="button" id="applyButton" class="green90x24">Apply</button>
+              <button type="button" id="disableButton" class="green90x24">Disable</button>
+              <button type="button" id="enableButton" class="green90x24">Enable</button>
+              <button type="button" id="openButton" class="green90x24">Open</button>
+              <button type="reset" id="resetButton" class="green90x24">Reset</button>
+            </div>
+
+          </form>
+
+          <div>
+            <h3>Executed commands:</h3>
+            <div id="commandDisplay">---</div>
+          </div>
+        </div>
+
+        <div id="testSubjectContainer" data-module="Test Subject">
+
+          <div class="testSubject" title="Test subject dialog">
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam gravida nisi sit amet dolor elementum feugiat. Phasellus pharetra quam quis nisi fermentum non dictum diam tristique. Pellentesque metus felis, lacinia ac interdum nec, elementum at nisl. Fusce malesuada imperdiet neque, id iaculis orci sodales cursus.
+            </p>
+            <p>
+              Nulla ut risus nec quam pretium semper. Proin congue dictum sapien, at tincidunt sapien viverra non. Donec luctus eros vel urna ullamcorper gravida. Suspendisse vitae quam et lorem ornare adipiscing. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aenean ante leo, facilisis vel feugiat ac, ultricies quis sem.
+            </p>
+          </div>
+
+        </div>
+
+        <div id="console" data-module="Console">
+        </div>
+
+      </div>
+    </div>
+
+  </body>
+</html>

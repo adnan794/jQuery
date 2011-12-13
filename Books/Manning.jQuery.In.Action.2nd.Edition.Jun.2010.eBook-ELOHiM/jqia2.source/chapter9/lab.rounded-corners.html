@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Rounded Corners Mini-Lab</title>
+    <link rel="stylesheet" type="text/css" href="../styles/core.css"/>
+    <link rel="stylesheet" type="text/css" href="../themes/cupertino/jquery-ui-1.8.custom.css"/>
+    <script type="text/javascript" src="../scripts/jquery-1.4.js"></script>
+    <script type="text/javascript">
+      $(function(){
+
+        $(':checkbox').change(function(){
+          var testSubjects$ = $('#testSubjects > *');
+          testSubjects$.removeClass();
+          $(':checkbox:checked').each(function(){ testSubjects$.addClass($(this).attr('id')) });
+        });
+
+      });
+    </script>
+    <style type="text/css">
+      #controlPanel { margin-bottom: 16px; width: 448px; }
+      #controlPanel > div {
+        float: left;
+        width: 148px;
+      }
+      #testSubjects { clear: both; padding-top: 12px; }
+      #testSubjects > div {
+        float: left;
+        margin-right: 32px;
+        border: 2px solid green;
+        width: 148px;
+        padding: 12px;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <h1>jQuery UI Rounded Corners Mini-Lab</h1>
+
+    <div id="controlPanel">
+      <div><input type="checkbox" id="ui-corner-tl"> <label for="ui-corner-tl">ui-corner-tl</label></div>
+      <div><input type="checkbox" id="ui-corner-top"> <label for="ui-corner-top">ui-corner-top</label></div>
+      <div><input type="checkbox" id="ui-corner-tr"> <label for="ui-corner-tr">ui-corner-tr</label></div>
+      <div><input type="checkbox" id="ui-corner-left"> <label for="ui-corner-left">ui-corner-left</label></div>
+      <div><input type="checkbox" id="ui-corner-all"> <label for="ui-corner-all">ui-corner-all</label></div>
+      <div><input type="checkbox" id="ui-corner-right"> <label for="ui-corner-right">ui-corner-right</label></div>
+      <div><input type="checkbox" id="ui-corner-bl"> <label for="ui-corner-bl">ui-corner-bl</label></div>
+      <div><input type="checkbox" id="ui-corner-bottom"> <label for="ui-corner-bottom">ui-corner-bottom</label></div>
+      <div><input type="checkbox" id="ui-corner-br"> <label for="ui-corner-br">ui-corner-br</label></div>
+    </div>
+
+    <div id="testSubjects">
+
+      <div>
+        The quick young cub jumped over the lazy bear.
+      </div>
+
+      <img src="images/hibiscus.small.jpg"/>
+
+    </div>
+
+  </body>
+</html>

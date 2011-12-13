@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Move and Copy Lab Page</title>
+    <link rel="stylesheet" type="text/css" href="../styles/core.css">
+    <style type="text/css">
+      div#sourcePane {
+        float: left;
+        width: 40%;
+      }
+
+      div#sourcePane img {
+        margin-bottom: 8px;
+      }
+
+      div#targetPane {
+        float: right;
+        width: 55%;
+      }
+
+      div.target {
+        border: 1px solid maroon;
+        background-color: #ffffcc;
+        margin-bottom: 8px;
+      }
+
+      #controls div {
+        margin-bottom: 4px;
+      }
+
+      #restoreButton {
+        display: none;
+      }
+
+      .done input[type=checkbox], .done #executeButton {
+        display: none;
+      }
+
+      .done #restoreButton {
+        display: inline;
+      }
+    </style>
+    <script type="text/javascript" src="../scripts/jquery-1.4.js"></script>
+    <script type="text/javascript" src="../scripts/jqia2.support.js"></script>
+    <script type="text/javascript">
+      $(function() {
+
+        $('#restoreButton').click(function(){
+          window.location = 'lab.move.and.copy.html';
+        });
+
+        $('#executeButton').click(function(){
+          $('body').addClass('done');
+          $('.done #controls :radio').attr('disabled',true);
+          var sources$ = $('#sourcePane input:checked~img');
+          if ($('[name=clone]:checked').val()=='yes') sources$ = sources$.clone();
+          var targets$ = $('#targetPane input:checkbox:checked').parents('.target');
+          var operation = $('[name=operations]:checked').val();
+          targets$[operation](sources$);
+        });
+
+      });
+    </script>
+  </head>
+
+  <body class="fancy">
+
+    <div id="pageContainer">
+      <div id="pageContent">
+
+        <h1>jQuery Move and Copy Lab Page</h1>
+
+        <div data-module="Sources" data-module-id="sourcePane">
+
+          <div>
+            <input type="checkbox" name="sources"/><br/>
+            <img src="source1.png" alt="source 1" title="Source 1" id="xyz"/>
+          </div>
+
+          <div>
+            <input type="checkbox" name="sources"/><br/>
+            <img src="source2.png" alt="source 2" title="Source 2"/>
+          </div>
+
+          <div>
+            <input type="checkbox" name="sources"/><br/>
+            <img src="source3.png" alt="source 3" title="Source 3"/>
+          </div>
+
+        </div>
+
+        <div data-module="Target Areas" data-module-id="targetPane">
+
+          <div id="target1" class="target">
+            <div><input type="checkbox" name="targets"/> Target 1</div>
+          </div>
+
+          <div id="target2" class="target">
+            <div><input type="checkbox" name="targets"/> Target 2</div>
+          </div>
+
+          <div id="target3" class="target">
+            <div><input type="checkbox" name="targets"/> Target 3</div>
+          </div>
+
+          <div id="controls">
+            <div>
+              <label>Operation:</label><br/>
+              <input type="radio" name="operations" value="append" checked="checked"/> append
+              <input type="radio" name="operations" value="prepend"/> prepend
+              <input type="radio" name="operations" value="before"/> before
+              <input type="radio" name="operations" value="after"/> after
+            </div>
+            <div>
+              <label>Clone?:</label><br/>
+              <input type="radio" name="clone" value="no" checked="checked"/> no
+              <input type="radio" name="clone" value="yes"/> yes
+            </div>
+          </div>
+
+          <div>
+            <button type="button" class="green90x24" id="executeButton">Execute</button>
+            <button type="button" class="green90x24" id="restoreButton">Restore</button>
+          </div>
+        </div>
+
+        <div class="footer">jQuery in Action, 2nd edition, sample code<br/>Bear Bibeault and Yehuda Katz</div>
+
+      </div>
+    </div>
+
+  </body>
+</html>

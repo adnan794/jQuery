@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>jQuery UI Date Formats Lab</title>
+    <link rel="stylesheet" type="text/css" href="../../styles/core.css">
+    <link rel="stylesheet" type="text/css" href="../../themes/cupertino/jquery-ui-1.8.custom.css">
+    <script type="text/javascript" src="../../scripts/jquery-1.4.js"></script>
+    <script type="text/javascript" src="../../scripts/jquery-ui-1.8.custom.min.js"></script>
+    <script type="text/javascript" src="../../scripts/jqia2.support.js"></script>
+    <script type="text/javascript">
+      $(function(){
+
+        var defaultPattern = 'm/d/yy';
+        var fullPattern = 'MM d, yy'
+
+        $('#candidateDate').val($.datepicker.formatDate(defaultPattern,new Date()));
+        $('#parseDateFormat,#formatDateFormat').val(defaultPattern);
+
+        $('#testForm')
+          .submit(function(){
+            var date = $.datepicker.parseDate($('#parseDateFormat').val(),$('#candidateDate').val());
+            $('#parsedResult').text($.datepicker.formatDate(fullPattern,date));
+            $('#formattedResult').text($.datepicker.formatDate($('#formatDateFormat').val(),date));
+            return false;
+          })
+          .submit();
+
+
+      });
+    </script>
+
+    <style>
+      label {
+        width: 10.5em;
+        float: left;
+      }
+    </style>
+  </head>
+
+  <body class="fancy">
+
+    <div id="pageContainer">
+      <div id="pageContent">
+
+        <h1>jQuery UI Date Format Lab</h1>
+
+        <div id="controlPanel" data-module="Date parsing and formatting">
+
+          <form action="#" id="testForm">
+
+            <div>
+              <label>Candidate date:</label>
+              <input type="text" id="candidateDate"/>
+            </div>
+
+            <div>
+              <label for="parseDateFormat">Parse using:</label>
+              <input type="text" id="parseDateFormat"/>
+            </div>
+
+            <div>
+              <label for="formatDateFormat">Format using:</label>
+              <input type="text" id="formatDateFormat"/>
+            </div>
+
+            <div>
+              <button type="submit" id="testButton" class="green90x24">Test</button>
+            </div>
+
+            <div>
+              <label>Parsed result:</label><span id="parsedResult">&mdash;</span>
+            </div>
+
+            <div>
+              <label>Formatted result:</label><span id="formattedResult">&mdash;</span>
+            </div>
+
+          </form>
+
+        </div>
+
+      </div>
+    </div>
+
+  </body>
+</html>
+

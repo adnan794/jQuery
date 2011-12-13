@@ -1,0 +1,205 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+  <head>
+    <title>jQuery in Action, 2nd Edition, Code Examples</title>
+    <link rel="stylesheet" type="text/css" href="themes/cupertino/jquery-ui-1.8.custom.css">
+    <link rel="stylesheet" type="text/css" href="styles/core.css">
+    <script type="text/javascript" src="scripts/jquery-1.4.js"></script>
+    <script type="text/javascript" src="scripts/jquery-ui-1.8.custom.min.js"></script>
+    <script type="text/javascript" src="scripts/jquery.themeswitcher.js"></script>
+    <script type="text/javascript">
+      $(function(){
+
+        $('#chaptersAccordion').accordion({ animated: 'bounceslide', navigation: true });
+
+      });
+    </script>
+    <style type="text/css">
+      #pageContainer {
+        width: 888px;
+        margin: 8px auto;
+        border: 0 ridge #348007;
+        background-color: transparent;
+        text-align: center;
+      }
+      #chaptersAccordion {
+        clear: both;
+        width: 698px;
+        margin: 32px auto;
+        text-align: left;
+      }
+      .ui-accordion-header {
+        padding: 0 4px;
+      }
+      .ui-accordion .ui-accordion-content {
+        padding: 0;
+      }
+      .ui-accordion .ui-accordion-content ul {
+        list-style: none;
+        font-size: 0.8em;
+        margin: 16px 32px;
+        padding: 0;
+      }
+      .ui-accordion .ui-accordion-content li {
+        margin: 0 0 3px 0;
+        padding: 0;
+      }
+      .ui-accordion .ui-accordion-content ul li a {
+        text-decoration: none;
+        font-weight: bold;
+      }
+      .ui-accordion .ui-accordion-content ul li a:hover {
+        color: #40ace4;
+      }
+    </style>
+  </head>
+
+  <body class="fancy">
+
+    <div id="pageContainer">
+      <img src="images/banner.png" alt="jQuery in Action, 2nd Edition, Code Examples">
+      <div id="pageContent">
+
+        <div id="chaptersAccordion">
+
+            <h2><a href="#chapter1">Chapter 1</a></h2>
+            <div>
+              <ul>
+                <li><a href="chapter1/radio.group.html" target="_blank">Radio Group Example</a></li>
+                <li><a href="chapter1/listing-1.1.html" target="_blank">Listing 1.1 (DOM addition example)</a></li>
+              </ul>
+            </div>
+
+            <h2><a href="#chapter2">Chapter 2</a></h2>
+            <div>
+              <ul>
+                <li><a href="chapter2/lab.selectors.html" target="_blank">jQuery Selectors Lab</a></li>
+                <li><a href="chapter2/listing-2.1.html" target="_blank">Listing 2.1 (new image example)</a></li>
+                <li><a href="chapter2/lab.operations.html" target="_blank">jQuery Operations Lab</a></li>
+              </ul>
+            </div>
+
+            <h2><a href="#chapter3">Chapter 3</a></h2>
+            <div>
+              <ul>
+                <li><a href="chapter3/zebra.stripes.html" target="_blank">Zebra Stripes Example</a></li>
+                <li><a href="chapter3/dimensions.html" target="_blank">Dynamic Dimensions Example</a></li>
+                <li><a href="chapter3/lab.move.and.copy.html" target="_blank">Move and Copy Lab</a></li>
+              </ul>
+            </div>
+
+            <h2><a href="#chapter4">Chapter 4</a></h2>
+            <div>
+              <ul>
+                <li><a href="chapter4/dom.0.events.html" target="_blank">DOM Level 0 Events Example</a></li>
+                <li><a href="chapter4/dom.0.propagation.html" target="_blank">DOM Level 0 Propagation Example</a></li>
+                <li><a href="chapter4/dom.2.events.html" target="_blank">DOM Level 2 Events Example</a></li>
+                <li><a href="chapter4/dom.2.propagation.html" target="_blank">DOM Level 2 Propagation Example</a></li>
+                <li><a href="chapter4/jquery.events.html" target="_blank">jQuery Event Model Example</a></li>
+                <li><a href="chapter4/toggle.html" target="_blank">Toggle Handlers Example</a></li>
+                <li><a href="chapter4/hover.html" target="_blank">Hover Example</a></li>
+                <li><a href="chapter4/dvds/dvds.html" target="_blank">DVD Ambassador &mdash; Comprehensive Example</a></li>
+              </ul>
+            </div>
+
+            <h2><a href="#chapter5">Chapter 5</a></h2>
+            <div>
+              <ul>
+                <li><a href="chapter5/collapsible.module.take.1.html" target="_blank">Collapsible Module &mdash; Take 1</a></li>
+                <li><a href="chapter5/collapsible.module.take.2.html" target="_blank">Collapsible Module &mdash; Take 2</a></li>
+                <li><a href="chapter5/collapsible.module.take.3.html" target="_blank">Collapsible Module &mdash; Take 3</a></li>
+                <li><a href="chapter5/lab.effects.html" target="_blank">jQuery Effects Lab</a></li>
+                <li><a href="chapter5/custom.effects.html" target="_blank">Custom Effects Demo</a></li>
+                <li><a href="chapter5/revolutions.html" target="_blank">Revolutions Experiment</a></li>
+                <li><a href="chapter5/queue.html" target="_blank">Queuing/Dequeuing - manual </a></li>
+                <li><a href="chapter5/queue.2.html" target="_blank">Queuing/Dequeuing - automatic</a></li>
+                <li><a href="chapter5/revolutions.2.html" target="_blank">Effects Queue</a></li>
+              </ul>
+            </div>
+
+            <h2><a href="#chapter6">Chapter 6</a></h2>
+            <div>
+              <ul>
+                <li><a href="chapter6/ready.handler.test.1.html" target="_blank">Ready handler test 1</a></li>
+                <li><a href="chapter6/ready.handler.test.2.html" target="_blank">Ready handler test 2</a></li>
+                <li><a href="chapter6/$.extend.html" target="_blank">$.extend() example</a></li>
+                <li><a href="chapter6/$.getScript.html" target="_blank">$.getScript() example</a></li>
+                <li><a href="chapter6/lab.$.param.html" target="_blank">$.param() Lab</a></li>
+                <li><a href="chapter6/$.proxy.html" target="_blank">$.proxy() Example</a></li>
+              </ul>
+            </div>
+
+            <h2><a href="#chapter7">Chapter 7</a></h2>
+            <div>
+              <ul>
+                <li><a href="chapter7/test.formatDate.html" target="_blank">Test the $.dateFormat() custom utility function</a></li>
+                <li><a href="chapter7/test.setReadOnly.html" target="_blank">Test the setReadOnly() custom wrapper method</a></li>
+                <li><a href="chapter7/photomatic/photomatic.html" target="_blank">Photomatic</a></li>
+              </ul>
+            </div>
+
+            <h2><a href="#chapter8">Chapter 8</a></h2>
+            <div>
+              <ul>
+                <li><a href="chapter8/listing.8.3.html" target="_blank">Listing 8.3 Example</a></li>
+                <li><a href="chapter8/ajax.events.html" target="_blank">Ajax Events Example</a></li>
+                <li><a href="chapter8/bootcloset/phase.1.html" target="_blank">Boot Closet &mdash; Phase 1</a></li>
+                <li><a href="chapter8/bootcloset/phase.2.html" target="_blank">Boot Closet &mdash; Phase 2</a></li>
+                <li><a href="chapter8/bootcloset/phase.3.html" target="_blank">Boot Closet &mdash; Phase 3</a></li>
+                <li><a href="chapter8/bootcloset/phase.4a.html" target="_blank">Boot Closet &mdash; Phase 4a</a></li>
+                <li><a href="chapter8/bootcloset/phase.4b.html" target="_blank">Boot Closet &mdash; Phase 4b</a></li>
+              </ul>
+            </div>
+
+            <h2><a href="#chapter9">Chapter 9</a></h2>
+            <div>
+              <ul>
+                <li><a href="chapter9/lab.rounded-corners.html" target="_blank">Rounded Corners Mini-Lab</a></li>
+                <li><a href="chapter9/lab.ui-effects.html" target="_blank">Effects Lab</a></li>
+                <li><a href="chapter9/lab.ui-easings.html" target="_blank">Easings Lab</a></li>
+                <li><a href="chapter9/lab.ui-positioning.html" target="_blank">Positioning Lab</a></li>
+              </ul>
+            </div>
+
+            <h2><a href="#chapter10">Chapter 10</a></h2>
+            <div>
+              <ul>
+                <li><a href="chapter10/draggables/lab.draggables.html" target="_blank">Draggables Lab</a></li>
+                <li><a href="chapter10/droppables/lab.droppables.html" target="_blank">Droppables Lab</a></li>
+                <li><a href="chapter10/sortables/lab.sortables.html" target="_blank">Sortables Lab</a></li>
+                <li><a href="chapter10/resizables/lab.resizables.html" target="_blank">Resizables Lab</a></li>
+                <li><a href="chapter10/selectables/lab.selectables.html" target="_blank">Selectables Lab</a></li>
+              </ul>
+            </div>
+
+          <h2><a href="#chapter11">Chapter 11</a></h2>
+          <div>
+            <ul>
+              <li><a href="chapter11/buttons/lab.buttons.html" target="_blank">Buttons Lab</a></li>
+              <li><a href="chapter11/buttons/ui-button-icons.html" target="_blank">Buttons Icons</a></li>
+              <li><a href="chapter11/sliders/lab.sliders.html" target="_blank">Sliders Lab</a></li>
+              <li><a href="chapter11/progressbars/autoprogressbar-test.html" target="_blank">Progessbar Plugin</a></li>
+              <li><a href="chapter11/autocompleters/lab.autocompleters.html" target="_blank">Autocompleters Lab</a></li>
+              <li><a href="chapter11/datepickers/lab.datepickers.html" target="_blank">Datepickers Lab</a></li>
+              <li><a href="chapter11/tabs/lab.tabs.html" target="_blank">Tabs Lab</a></li>
+              <li><a href="chapter11/accordions/lab.accordions.html" target="_blank">Accordions Lab</a></li>
+              <li><a href="chapter11/dialogs/lab.dialogs.html" target="_blank">Dialogs Lab</a></li>
+            </ul>
+          </div>
+
+          <h2><a href="#appendix">Appendix</a></h2>
+          <div>
+            <ul>
+              <li><a href="appendix/function.context.html" target="_blank">Function Contexts</a></li>
+              <li><a href="appendix/closure.html" target="_blank">Closures</a></li>
+            </ul>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </body>
+</html>

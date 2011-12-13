@@ -1,0 +1,223 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <title>jQuery UI Droppables Lab</title>
+    <link rel="stylesheet" type="text/css" href="../../styles/core.css">
+    <script type="text/javascript" src="../../scripts/jquery-1.4.js"></script>
+    <script type="text/javascript" src="../../scripts/jquery-ui-1.8.custom.min.js"></script>
+    <script type="text/javascript" src="../../scripts/jqia2.support.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        $('#labForm').submit(function(){ return false; } );
+        $('#testDraggables img').draggable({
+          helper: 'clone',
+          opacity: 0.5,
+          revert: true
+        });
+        $('#applyButton').click(function(){
+          $('#dropZone').droppable('destroy');
+          var options = {};
+          $.collectOptions(options);
+          //
+          // special case options
+          //
+          options.accept = $('[name=accept]:checked').map(function(){return '.'+$(this).val();}).get().join(',');
+          //
+          // Display
+          //
+          $('#commandDisplay').html("$('#dropZone').droppable("+$.forDisplay(options)+");");
+          //
+          // Callbacks
+          //
+          options.activate = function(){throb('div.activate');};
+          options.deactivate = function(){throb('div.deactivate');};
+          options.over = function(){throb('div.over');};
+          options.out = function(){throb('div.out');};
+          options.drop = function(event,info){
+            throb('div.drop');
+            this.src = $(info.draggable).attr('src');
+          };
+          //
+          // Apply
+          //
+          $('#dropZone').droppable(options);
+        });
+        $('#disableButton').click(function(){
+          $('#dropZone').droppable('disable');
+          $('#commandDisplay').html("$('#dropZone').droppable('disable');");
+        });
+        $('#enableButton').click(function(){
+          $('#dropZone').droppable('enable');
+          $('#commandDisplay').html("$('#dropZone').droppable('enable');");
+        });
+        $('#labForm').bind('reset',function(){
+          $('#dropZone').droppable('destroy');
+          $('form')[0].reset();
+          $('img#dropZone').attr('src','images/dropzone.png');
+        });
+      });
+
+      function throb(element) {
+        $(element).animate({opacity:1.0},250,function(){$(this).animate({opacity:0.5},2000);});
+      }
+    </script>
+    <style>
+      fieldset {
+        width: 640px;
+      }
+      #buttonBar {
+        clear: both;
+        padding-top: 12px;
+      }
+      label {
+        float: left;
+        text-align: right;
+        width: 100px;
+        font-weight: bold;
+        margin-right: 6px;
+      }
+      #console div {
+        clear: both;
+      }
+      #console label {
+        width: 120px;
+      }
+      #testSubjectContainer {
+        height: 300px;
+      }
+      #testDraggables {
+        float: left;
+        width: 408px;
+        padding-right: 2px;
+      }
+      #testDraggables img {
+        margin: 1px;
+        border: 1px solid black;
+      }
+      #testDroppables {
+        float: right;
+        width: 284px;
+        padding-right: 2px;
+        text-align: center;
+      }
+      #testDroppables img {
+        background-image: url('dropzone-purple.png');
+      }
+      #testDroppables img.redBorder {
+        border-color: red;
+      }
+      #testDroppables img.blueBorder {
+        border-color: blue;
+      }
+      #testDroppables img.greenBorder {
+        border-color: green;
+      }
+      #testDroppables img.silver {
+        background-image: url('dropzone-silver.png');
+      }
+      #testDroppables img.gold {
+        background-image: url('dropzone-gold.png');
+      }
+      #testDroppables img.bronze {
+        background-image: url('dropzone-bronze.png');
+      }
+      img#dropZone {
+        border: 3px black solid;
+      }
+      #optionsContainer div {
+        clear: both;
+      }
+      #throbbables {
+        text-align: center;
+        float: right;
+        width: 284px;
+        padding-top: 18px;
+      }
+      #throbbables div {
+        opacity: 0.5;
+        filter: alpha(opacity=50);
+        font-weight: bolder;
+      }
+    </style>
+  </head>
+
+  <body class="fancy">
+    <div id="pageContainer">
+      <div id="pageContent">
+
+        <h1>jQuery UI Droppables Lab</h1>
+
+        <div data-module="Control Panel">
+          <form action="" id="labForm">
+            <h3>Draggable options</h3>
+            <div id="optionsContainer">
+              <div>
+                <label>accept:</label>
+                <input type="checkbox" name="accept" value="flower" checked="checked">flower
+                <input type="checkbox" name="accept" value="dog" checked="checked">dog
+                <input type="checkbox" name="accept" value="motorcycle" checked="checked">motorcycle
+                <input type="checkbox" name="accept" value="water" checked="checked">water
+              </div>
+              <div>
+                <label>activeClass:</label>
+                <input type="radio" name="activeClass" value="" checked="checked" class="radioOption">none
+                <input type="radio" name="activeClass" value="redBorder" class="radioOption">redBorder
+                <input type="radio" name="activeClass" value="blueBorder" class="radioOption">blueBorder
+                <input type="radio" name="activeClass" value="greenBorder" class="radioOption">greenBorder
+              </div>
+              <div>
+                <label>hoverClass:</label>
+                <input type="radio" name="hoverClass" value="" checked="checked" class="radioOption">none
+                <input type="radio" name="hoverClass" value="bronze" class="radioOption">bronze
+                <input type="radio" name="hoverClass" value="silver" class="radioOption">silver
+                <input type="radio" name="hoverClass" value="gold" class="radioOption">gold
+              </div>
+              <div>
+                <label>tolerance:</label>
+                <input type="radio" name="tolerance" value="" checked="checked" class="radioOption">none
+                <input type="radio" name="tolerance" value="intersect" class="radioOption">intersect
+                <input type="radio" name="tolerance" value="pointer" class="radioOption">pointer
+                <input type="radio" name="tolerance" value="fit" class="radioOption">fit
+                <input type="radio" name="tolerance" value="touch" class="radioOption">touch
+              </div>
+            </div>
+            <div id="buttonBar">
+              <button type="button" id="applyButton" class="green90x24">Apply</button>
+              <button type="button" id="disableButton" class="green90x24">Disable</button>
+              <button type="button" id="enableButton" class="green90x24">Enable</button>
+              <button type="reset" id="resetButton" class="green90x24">Reset</button>
+            </div>
+          </form>
+          <div>
+            <h3>Executed command:</h3>
+            <div id="commandDisplay">---</div>
+          </div>
+        </div>
+
+        <div data-module="Test Subjects">
+          <div id="testDraggables">
+            <img src="dog.flowers.jpg" alt="dog and flowers" class="dog flower"/>
+            <img src="dog.jpg" alt="dog" class="dog"/>
+            <img src="flower.jpg" alt="flower" class="flower"/>
+            <img src="motorcycle.jpg" alt="motorcycle" class="motorcycle"/>
+            <img src="river.jpg" alt="motorcycle and river" class="motorcycle water"/>
+            <img src="waterfall.jpg" alt="waterfall" class="water"/>
+          </div>
+          <div id="testDroppables" class="droppableContainer">
+            <img src="dropzone.png" alt="drop zone" id="dropZone"/>
+          </div>
+          <div id="throbbables">
+            <div class="activate">ACTIVATE</div>
+            <div class="over">OVER</div>
+            <div class="out">OUT</div>
+            <div class="drop">DROP</div>
+            <div class="deactivate">DEACTIVATE</div>
+          </div>
+          <div style="clear:both;">&nbsp;</div>
+        </div>
+
+      </div>
+    </div>
+
+  </body>
+</html>

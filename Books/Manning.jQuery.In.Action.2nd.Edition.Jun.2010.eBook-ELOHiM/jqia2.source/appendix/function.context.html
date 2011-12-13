@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Function Context Example</title>
+    <script>
+      var o1 = {handle:'o1'};
+      var o2 = {handle:'o2'};
+      var o3 = {handle:'o3'};
+      window.handle = 'window';
+
+      function whoAmI() {
+        return this.handle;
+      }
+
+      o1.identifyMe = whoAmI;
+
+      alert(whoAmI());
+      alert(o1.identifyMe());
+      alert(whoAmI.call(o2));
+      alert(whoAmI.apply(o3));
+
+    </script>
+  </head>
+
+  <body>
+  </body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>$.param() Lab</title>
+    <link rel="stylesheet" type="text/css" href="../styles/core.css">
+    <script type="text/javascript" src="../scripts/jquery-1.4.js"></script>
+    <script type="text/javascript" src="../scripts/jqia2.support.js"></script>
+    <script type="text/javascript">
+
+      $(function(){
+
+        $('#applyButton').click(function(){
+          var sourceName = $('[name="source"]:checked').val();
+          var source = eval('('+$(sourceName).text()+')');
+          var traditional = $('[name="traditional"]:checked').length == 1;
+
+          say( 'Using <tt>' + sourceName + '</tt> and with <tt>traditional</tt> ' +
+               (traditional ? 'enabled' : 'disabled') + ' produced:<br><tt>' +
+               decodeURIComponent($.param(source,traditional)) +
+               '</tt>');
+        });
+
+      });
+    </script>
+
+    <style>
+      .module { width: 680px }
+
+      .codeDisplay { width: 300px; float: left; margin-right: 1em; }
+
+      .codeDisplay pre { background-color: #fcfff9; margin-left: 2em; }
+
+      .buttonBar { clear: both; }
+
+    </style>
+  </head>
+
+  <body>
+
+    <h1>$.param() Lab</h1>
+
+    <div data-module="$.param()">
+
+      <div class="codeDisplay">
+        <input type="radio" name="source" value="#flatSource" checked> Flat source:
+        <pre id="flatSource">
+{
+  firstName: 'Yogi',
+  lastName: 'Bear',
+  streetAddress: '123 Anywhere Lane',
+  city: 'Austin',
+  state: 'TX',
+  postalCode : '78701'
+}
+        </pre>
+      </div>
+
+      <div class="codeDisplay">
+        <input type="radio" name="source" value="#nestedSource"> Nested source:
+        <pre id="nestedSource">
+{
+  name: {
+    first: 'Yogi',
+    last: 'Bear'
+  },
+  address: {
+    street: '123 Anywhere Lane',
+    city: 'Austin',
+    state: 'TX',
+    postalCode : '78701'
+  }
+}
+        </pre>
+      </div>
+
+      <div class="buttonBar">
+        <input type="checkbox" name="traditional" id="traditionalCheckbox" checked> <label for="traditionalCheckbox">Traditional</label><br>
+        <button type="button" id="applyButton" class="green90x24">Apply</button>
+      </div>
+
+    </div>
+
+  </body>
+</html>

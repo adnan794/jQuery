@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dynamic Dimensions Example</title>
+    <link rel="stylesheet" type="text/css" href="../styles/core.css"/>
+    <style type="text/css">
+      body {
+        background-color: #eeeeee;
+      }
+      #testSubject {
+        background-color: #ffffcc;
+        border: 2px ridge maroon;
+        padding: 8px;
+        font-size: .85em;
+      }
+    </style>
+    <script type="text/javascript" src="../scripts/jquery-1.4.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        $(window).resize(displayDimensions);
+        displayDimensions();
+      });
+
+      function displayDimensions() {
+        $('#display').html(
+          $('#testSubject').width()+'x'+$('#testSubject').height()
+        );
+      }
+    </script>
+  </head>
+
+  <body>
+    <div id="testSubject">
+      Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+      Aliquam eget enim id neque aliquet porttitor. Suspendisse
+      nisl enim, nonummy ac, nonummy ut, dignissim ac, justo.
+      Aenean imperdiet semper nibh. Vivamus ligula. In in ipsum
+      sed neque vehicula rhoncus. Nam faucibus pharetra nisi.
+      Integer at metus. Suspendisse potenti. Vestibulum ante
+      ipsum primis in faucibus orci luctus et ultrices posuere
+      cubilia Curae; Proin quis eros at metus pretium elementum.
+    </div>
+    <div id="display"></div>
+  </body>
+</html>

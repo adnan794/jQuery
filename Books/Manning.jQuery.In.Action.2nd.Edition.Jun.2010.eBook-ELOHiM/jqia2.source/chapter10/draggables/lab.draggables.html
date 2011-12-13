@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>jQuery UI Draggables Lab</title>
+    <link rel="stylesheet" type="text/css" href="../../styles/core.css">
+    <script type="text/javascript" src="../../scripts/jquery-1.4.js"></script>
+    <script type="text/javascript" src="../../scripts/jquery-ui-1.8.custom.min.js"></script>
+    <script type="text/javascript" src="../../scripts/jqia2.support.js"></script>
+    <script type="text/javascript">
+      $(function(){
+
+        $('#labForm').submit(function(){ return false; } );
+
+        $('#applyButton').click(function(){
+          $('#testSubject').draggable('destroy');
+          $('#startInfo').html('---');
+          $('#currentInfo').html('---');
+          $('#stopInfo').html('---');
+          var options = {};
+          $.collectOptions(options);
+          //
+          // special case options
+          //
+          var gridX = $('#gridXField').val();
+          var gridY = $('#gridYField').val();
+          if (gridX!=''||gridY!='') {
+            gridX = (gridX=='') ? 0 : parseInt(gridX);
+            gridY = (gridY=='') ? 0 :parseInt(gridY);
+            options.grid=[gridX,gridY];
+          }
+          var cursorAtTop = $('#cursorAtTopField').val();
+          var cursorAtLeft = $('#cursorAtLeftField').val();
+          if (cursorAtTop!=''||cursorAtLeft!='') {
+            cursorAtTop = (cursorAtTop=='') ? 0 : parseInt(cursorAtTop);
+            cursorAtLeft = (cursorAtLeft=='') ? 0 : parseInt(cursorAtLeft);
+            options.cursorAt={top:cursorAtTop,left:cursorAtLeft};
+          }
+          //
+          // Display the command
+          //
+          $('#commandDisplay').html("$('#testSubject').draggable("+$.forDisplay(options)+");");
+          //
+          // Register events
+          //
+          options.start = options.drag = options.stop = function(event,info) {
+            if (info.position != null) $('#positionInfo').html('('+info.position.left+','+info.position.top+')');
+            if (info.offset != null) $('#offsetInfo').html('('+info.offset.left+','+info.offset.top+')');
+          };
+          //
+          // Apply draggability to the test subject
+          //
+          $('#testSubject').draggable(options);
+        });
+        $('#disableButton').click(function(){
+          $('#testSubject').draggable('disable');
+          $('#commandDisplay').html("$('#testSubject').draggable('disable');");
+        });
+        $('#enableButton').click(function(){
+          $('#testSubject').draggable('enable');
+          $('#commandDisplay').html("$('#testSubject').draggable('enable');");
+        });
+        $('#labForm').bind('reset',function(){ $('#testSubject').draggable('destroy'); });
+      });
+
+    </script>
+
+    <style>
+      #optionsContainer>div {
+        float: left;
+        width: 400px;
+      }
+      #buttonBar {
+        clear: both;
+        padding-top: 12px;
+      }
+      #column2 input[type=text] {
+        width: 32px;
+      }
+      #testSubjectContainer .body {
+        height: 256px;
+      }
+      label {
+        float: left;
+        text-align: right;
+        width: 100px;
+        font-weight: bold;
+        margin-right: 6px;
+      }
+      #column2 label {
+        width: 144px;
+      }
+      #console div {
+        clear: both;
+      }
+      #console label {
+        width: 6em;
+      }
+    </style>
+  </head>
+
+  <body class="fancy">
+
+    <div id="pageContainer">
+      <div id="pageContent">
+
+        <h1>jQuery UI Draggables Lab</h1>
+
+        <div data-module="Control Panel">
+          <form action="" id="labForm">
+            <h3>Draggable options</h3>
+            <table id="optionsContainer" cellpadding="0" border="0" cellspacing="0">
+              <tr>
+              <td id="column1">
+                <div>
+                  <label>axis:</label>
+                  <input type="radio" name="axis" value="" checked="checked" class="radioOption">none
+                  <input type="radio" name="axis" value="x" class="radioOption">x
+                  <input type="radio" name="axis" value="y" class="radioOption">y
+                </div>
+                <div>
+                  <label>containment:</label>
+                  <input type="radio" name="containment" value="" checked="checked" class="radioOption">none
+                  <input type="radio" name="containment" value="document" class="radioOption">document
+                  <input type="radio" name="containment" value="parent" class="radioOption">parent
+                  <input type="radio" name="containment" value="window" class="radioOption">window
+                </div>
+                <div>
+                  <label>cursor:</label>
+                  <input type="radio" name="cursor" value="" checked="checked" class="radioOption">none
+                  <input type="radio" name="cursor" value="crosshair" class="radioOption">crosshair
+                  <input type="radio" name="cursor" value="wait" class="radioOption">wait
+                  <input type="radio" name="cursor" value="help" class="radioOption">help
+                </div>
+                <div>
+                  <label>helper:</label>
+                  <input type="radio" name="helper" value="" checked="checked" class="radioOption">unspecified
+                  <input type="radio" name="helper" value="original" class="radioOption">original
+                  <input type="radio" name="helper" value="clone" class="radioOption">clone
+                </div>
+                <div>
+                  <label>revert:</label>
+                  <input type="radio" name="revert" value="" checked="checked" class="booleanOption">unspecified
+                  <input type="radio" name="revert" value="true" class="booleanOption">true
+                  <input type="radio" name="revert" value="false" class="booleanOption">false
+                </div>
+                <div>
+                  <label>scroll:</label>
+                  <input type="radio" name="scroll" value="" checked="checked" class="booleanOption">unspecified
+                  <input type="radio" name="scroll" value="true" class="booleanOption">true
+                  <input type="radio" name="scroll" value="false" class="booleanOption">false
+                </div>
+              </td>
+              <td id="column2">
+                <div>
+                  <label>opacity:</label>
+                  <input type="text" id="opacityField" name="opacity" class="valueOption"/> (0.0 through 1.0)
+                </div>
+                <div>
+                  <label>distance:</label>
+                  <input type="text" id="distanceField" name="distance" class="valueOption"/> px
+                </div>
+                <div>
+                  <label>grid:</label>
+                  <input type="text" id="gridXField" name="gridX"/> by
+                  <input type="text" id="gridYField" name="gridY"/>
+                </div>
+                <div>
+                  <label>cursorAt:</label>
+                  top <input type="text" id="cursorAtTopField" name="cursorAtTop"/>
+                  left <input type="text" id="cursorAtLeftField" name="cursorAtLeft"/>
+                </div>
+              </td>
+              </tr>
+            </table>
+            <div id="buttonBar">
+              <button type="button" id="applyButton" class="green90x24">Apply</button>
+              <button type="button" id="disableButton" class="green90x24">Disable</button>
+              <button type="button" id="enableButton" class="green90x24">Enable</button>
+              <button type="reset" id="resetButton" class="green90x24">Reset</button>
+            </div>
+          </form>
+          <div>
+            <h3>Executed command:</h3>
+            <div id="commandDisplay">---</div>
+          </div>
+        </div>
+
+        <div data-module="Test Subject">
+          <img id="testSubject" src="dragon.png" alt="test subject"/>
+        </div>
+
+        <div data-module="Console" id="console">
+          <div><label>Position:</label> <span id="positionInfo">---</span></div>
+          <div><label>Offset:</label> <span id="offsetInfo">---</span></div>
+        </div>
+
+      </div>
+    </div>
+
+  </body>
+</html>
+

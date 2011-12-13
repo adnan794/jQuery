@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>DOM Level 2 Events Example</title>
+    <link rel="stylesheet" type="text/css" href="../styles/core.css"/>
+    <script type="text/javascript" src="../scripts/jquery-1.4.js"></script>
+    <script type="text/javascript" src="../scripts/jqia2.support.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        var element = $('#example')[0];
+        element.addEventListener('click',function(event) {
+          say('BOOM once!');
+        },false);
+        element.addEventListener('click',function(event) {
+          say('BOOM twice!');
+        },false);
+        element.addEventListener('click',function(event) {
+          say('BOOM three times!');
+        },false);
+      });
+    </script>
+  </head>
+
+  <body>
+    <img id="example" src="example.jpg"/>
+  </body>
+</html>

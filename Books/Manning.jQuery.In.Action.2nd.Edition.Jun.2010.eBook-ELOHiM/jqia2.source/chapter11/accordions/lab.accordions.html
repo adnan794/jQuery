@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>jQuery UI Accordions Lab</title>
+    <link rel="stylesheet" type="text/css" href="../../styles/core.css">
+    <link rel="stylesheet" type="text/css" href="../../themes/cupertino/jquery-ui-1.8.custom.css">
+    <script type="text/javascript" src="../../scripts/jquery-1.4.js"></script>
+    <script type="text/javascript" src="../../scripts/jquery-ui-1.8.custom.min.js"></script>
+    <script type="text/javascript" src="../../scripts/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../../scripts/jqia2.support.js"></script>
+    <script type="text/javascript">
+      $(function(){
+
+        $('#labForm').submit(function(){ return false; } );
+
+        $('#applyButton').click(function(){
+          $('.testSubject').accordion('destroy');
+          var options = {};
+          $.collectOptions(options);
+          //
+          // special cases and fixups
+          //
+          if (options.active=='false') options.active = false;
+          if (options.active!=null && options.active != false) options.active = parseInt(options.active);
+          if (options.animated=='false') options.animated = false;
+          var iconOptions = {};
+          if ($('#headerIconList').val() != '') iconOptions.header = $('#headerIconList').val();
+          if ($('#selectedIconList').val() != '') iconOptions.headerSelected = $('#selectedIconList').val();
+          if (iconOptions.header || iconOptions.headerSelected) options.icons = iconOptions;
+          //
+          // Display the command
+          //
+          $('#commandDisplay').html("$('.testSubject').accordion("+$.forDisplay(options)+");");
+          //
+          // Register events
+          //
+          options.change = options.changestart = function(event,info){
+            var stuff = {
+              newHeader: (info.newHeader.length==0) ? '' : (info.newHeader)[0].tagName + '#' + info.newHeader.attr('id'),
+              oldHeader: (info.oldHeader.length==0) ? '' : (info.oldHeader)[0].tagName + '#' + info.oldHeader.attr('id'),
+              newContent: (info.newContent.length==0) ? '' : (info.newContent)[0].tagName + '#' + info.newContent.attr('id'),
+              oldContent: (info.oldContent.length==0) ? '' : (info.oldContent)[0].tagName + '#' + info.oldContent.attr('id')
+            };
+            say(event.type + ' ' + $.forDisplay(stuff));
+          };
+          //
+          // Make the test subject into accordions
+          //
+          $('.testSubject').accordion(options);
+        });
+
+        $('#disableButton').click(function(){
+          $('.testSubject').accordion('disable');
+          $('#commandDisplay').html("$('.testSubject').accordion('disable');");
+        });
+
+        $('#enableButton').click(function(){
+          $('.testSubject').accordion('enable');
+          $('#commandDisplay').html("$('.testSubject').accordion('enable');");
+        });
+
+        $('#labForm').bind('reset',function(){
+          $('#commandDisplay').html('&mdash;');
+          $('#console').html('');
+          $('.testSubject').accordion('destroy');
+          $('#labForm')[0].reset();
+        });
+
+      });
+
+    </script>
+
+    <style>
+      #optionsContainer>div {
+        float: left;
+        width: 400px;
+      }
+      #buttonBar {
+        clear: both;
+        padding-top: 12px;
+      }
+      #column2 input[type=text] {
+        width: 32px;
+      }
+      .testSubjectContainer .body {
+        height: 256px;
+      }
+      #controlPanel label {
+        float: left;
+        text-align: right;
+        width: 9em;
+        font-weight: bold;
+        margin-right: 6px;
+      }
+      #column2 label {
+        width: 144px;
+      }
+      #console div {
+        clear: both;
+      }
+      #console label {
+        width: 6em;
+      }
+    </style>
+  </head>
+
+  <body class="fancy">
+
+    <div id="pageContainer">
+      <div id="pageContent">
+
+        <h1>jQuery UI Accordions Lab</h1>
+
+        <div id="controlPanel" data-module="Control Panel">
+          <form action="" id="labForm">
+
+            <h3>Accordion options</h3>
+
+            <div>
+              <label>active:</label>
+              <input type="radio" name="active" value="" checked="checked" class="radioOption">unspecified
+              <input type="radio" name="active" value="0" class="radioOption">0
+              <input type="radio" name="active" value="1" class="radioOption">1
+              <input type="radio" name="active" value="2" class="radioOption">2
+              <input type="radio" name="active" value="false" class="radioOption">false
+            </div>
+
+            <div>
+              <label>animated:</label>
+              <input type="radio" name="animated" value="" checked="checked" class="radioOption">unspecified
+              <input type="radio" name="animated" value="slide" class="radioOption"> slide
+              <input type="radio" name="animated" value="bounceslide" class="radioOption"> bounceslide
+              <input type="radio" name="animated" value="fade" class="radioOption"> fade
+              <input type="radio" name="animated" value="false" class="radioOption"> false
+            </div>
+
+            <div>
+              <label>autoHeight:</label>
+              <input type="radio" name="autoHeight" value="" checked="checked" class="booleanOption">unspecified
+              <input type="radio" name="autoHeight" value="true" class="booleanOption">true
+              <input type="radio" name="autoHeight" value="false" class="booleanOption">false
+            </div>
+
+            <!--div>
+              <label>clearStyle:</label>
+              <input type="radio" name="clearStyle" value="" checked="checked" class="booleanOption">unspecified
+              <input type="radio" name="clearStyle" value="true" class="booleanOption">true
+              <input type="radio" name="clearStyle" value="false" class="booleanOption">false
+            </div-->
+
+            <div>
+              <label>collapsible:</label>
+              <input type="radio" name="collapsible" value="" checked="checked" class="booleanOption">unspecified
+              <input type="radio" name="collapsible" value="true" class="booleanOption">true
+              <input type="radio" name="collapsible" value="false" class="booleanOption">false
+            </div>
+
+            <div>
+              <label>event:</label>
+              <input type="radio" name="event" value="" checked="checked" class="radioOption">unspecified
+              <input type="radio" name="event" value="click" class="radioOption">click
+              <input type="radio" name="event" value="mouseover" class="radioOption">mouseover
+            </div>
+
+            <div>
+              <label>header icon:</label>
+              <select id="headerIconList">
+                <option value="">&mdash; unspecified &mdash;</option>
+                <option>ui-icon-carat-1-n</option><option>ui-icon-carat-1-ne</option><option>ui-icon-carat-1-e</option><option>ui-icon-carat-1-se</option><option>ui-icon-carat-1-s</option><option>ui-icon-carat-1-sw</option><option>ui-icon-carat-1-w</option><option>ui-icon-carat-1-nw</option><option>ui-icon-carat-2-n-s</option><option>ui-icon-carat-2-e-w</option><option>ui-icon-triangle-1-n</option><option>ui-icon-triangle-1-ne</option><option>ui-icon-triangle-1-e</option><option>ui-icon-triangle-1-se</option><option>ui-icon-triangle-1-s</option><option>ui-icon-triangle-1-sw</option><option>ui-icon-triangle-1-w</option><option>ui-icon-triangle-1-nw</option><option>ui-icon-triangle-2-n-s</option><option>ui-icon-triangle-2-e-w</option><option>ui-icon-arrow-1-n</option><option>ui-icon-arrow-1-ne</option><option>ui-icon-arrow-1-e</option><option>ui-icon-arrow-1-se</option><option>ui-icon-arrow-1-s</option><option>ui-icon-arrow-1-sw</option><option>ui-icon-arrow-1-w</option><option>ui-icon-arrow-1-nw</option><option>ui-icon-arrow-2-n-s</option><option>ui-icon-arrow-2-ne-sw</option><option>ui-icon-arrow-2-e-w</option><option>ui-icon-arrow-2-se-nw</option><option>ui-icon-arrowstop-1-n</option><option>ui-icon-arrowstop-1-e</option><option>ui-icon-arrowstop-1-s</option><option>ui-icon-arrowstop-1-w</option><option>ui-icon-arrowthick-1-n</option><option>ui-icon-arrowthick-1-ne</option><option>ui-icon-arrowthick-1-e</option><option>ui-icon-arrowthick-1-se</option><option>ui-icon-arrowthick-1-s</option><option>ui-icon-arrowthick-1-sw</option><option>ui-icon-arrowthick-1-w</option><option>ui-icon-arrowthick-1-nw</option><option>ui-icon-arrowthick-2-n-s</option><option>ui-icon-arrowthick-2-ne-sw</option><option>ui-icon-arrowthick-2-e-w</option><option>ui-icon-arrowthick-2-se-nw</option><option>ui-icon-arrowthickstop-1-n</option><option>ui-icon-arrowthickstop-1-e</option><option>ui-icon-arrowthickstop-1-s</option><option>ui-icon-arrowthickstop-1-w</option><option>ui-icon-arrowreturnthick-1-w</option><option>ui-icon-arrowreturnthick-1-n</option><option>ui-icon-arrowreturnthick-1-e</option><option>ui-icon-arrowreturnthick-1-s</option><option>ui-icon-arrowreturn-1-w</option><option>ui-icon-arrowreturn-1-n</option><option>ui-icon-arrowreturn-1-e</option><option>ui-icon-arrowreturn-1-s</option><option>ui-icon-arrowrefresh-1-w</option><option>ui-icon-arrowrefresh-1-n</option><option>ui-icon-arrowrefresh-1-e</option><option>ui-icon-arrowrefresh-1-s</option><option>ui-icon-arrow-4</option><option>ui-icon-arrow-4-diag</option><option>ui-icon-extlink</option><option>ui-icon-newwin</option><option>ui-icon-refresh</option><option>ui-icon-shuffle</option><option>ui-icon-transfer-e-w</option><option>ui-icon-transferthick-e-w</option><option>ui-icon-folder-collapsed</option><option>ui-icon-folder-open</option><option>ui-icon-document</option><option>ui-icon-document-b</option><option>ui-icon-note</option><option>ui-icon-mail-closed</option><option>ui-icon-mail-open</option><option>ui-icon-suitcase</option><option>ui-icon-comment</option><option>ui-icon-person</option><option>ui-icon-print</option><option>ui-icon-trash</option><option>ui-icon-locked</option><option>ui-icon-unlocked</option><option>ui-icon-bookmark</option><option>ui-icon-tag</option><option>ui-icon-home</option><option>ui-icon-flag</option><option>ui-icon-calendar</option><option>ui-icon-cart</option><option>ui-icon-pencil</option><option>ui-icon-clock</option><option>ui-icon-disk</option><option>ui-icon-calculator</option><option>ui-icon-zoomin</option><option>ui-icon-zoomout</option><option>ui-icon-search</option><option>ui-icon-wrench</option><option>ui-icon-gear</option><option>ui-icon-heart</option><option>ui-icon-star</option><option>ui-icon-link</option><option>ui-icon-cancel</option><option>ui-icon-plus</option><option>ui-icon-plusthick</option><option>ui-icon-minus</option><option>ui-icon-minusthick</option><option>ui-icon-close</option><option>ui-icon-closethick</option><option>ui-icon-key</option><option>ui-icon-lightbulb</option><option>ui-icon-scissors</option><option>ui-icon-clipboard</option><option>ui-icon-copy</option><option>ui-icon-contact</option><option>ui-icon-image</option><option>ui-icon-video</option><option>ui-icon-script</option><option>ui-icon-alert</option><option>ui-icon-info</option><option>ui-icon-notice</option><option>ui-icon-help</option><option>ui-icon-check</option><option>ui-icon-bullet</option><option>ui-icon-radio-off</option><option>ui-icon-radio-on</option><option>ui-icon-pin-w</option><option>ui-icon-pin-s</option><option>ui-icon-play</option><option>ui-icon-pause</option><option>ui-icon-seek-next</option><option>ui-icon-seek-prev</option><option>ui-icon-seek-end</option><option>ui-icon-seek-start</option><option>ui-icon-seek-first</option><option>ui-icon-stop</option><option>ui-icon-eject</option><option>ui-icon-volume-off</option><option>ui-icon-volume-on</option><option>ui-icon-power</option><option>ui-icon-signal-diag</option><option>ui-icon-signal</option><option>ui-icon-battery-0</option><option>ui-icon-battery-1</option><option>ui-icon-battery-2</option><option>ui-icon-battery-3</option><option>ui-icon-circle-plus</option><option>ui-icon-circle-minus</option><option>ui-icon-circle-close</option><option>ui-icon-circle-triangle-e</option><option>ui-icon-circle-triangle-s</option><option>ui-icon-circle-triangle-w</option><option>ui-icon-circle-triangle-n</option><option>ui-icon-circle-arrow-e</option><option>ui-icon-circle-arrow-s</option><option>ui-icon-circle-arrow-w</option><option>ui-icon-circle-arrow-n</option><option>ui-icon-circle-zoomin</option><option>ui-icon-circle-zoomout</option><option>ui-icon-circle-check</option><option>ui-icon-circlesmall-plus</option><option>ui-icon-circlesmall-minus</option><option>ui-icon-circlesmall-close</option><option>ui-icon-squaresmall-plus</option><option>ui-icon-squaresmall-minus</option><option>ui-icon-squaresmall-close</option><option>ui-icon-grip-dotted-vertical</option><option>ui-icon-grip-dotted-horizontal</option><option>ui-icon-grip-solid-vertical</option><option>ui-icon-grip-solid-horizontal</option><option>ui-icon-gripsmall-diagonal-se</option><option>ui-icon-grip-diagonal-se</option>
+              </select>
+            </div>
+
+            <div>
+              <label>headerSelected icon:</label>
+              <select id="selectedIconList">
+                <option value="">&mdash; unspecified &mdash;</option>
+                <option>ui-icon-carat-1-n</option><option>ui-icon-carat-1-ne</option><option>ui-icon-carat-1-e</option><option>ui-icon-carat-1-se</option><option>ui-icon-carat-1-s</option><option>ui-icon-carat-1-sw</option><option>ui-icon-carat-1-w</option><option>ui-icon-carat-1-nw</option><option>ui-icon-carat-2-n-s</option><option>ui-icon-carat-2-e-w</option><option>ui-icon-triangle-1-n</option><option>ui-icon-triangle-1-ne</option><option>ui-icon-triangle-1-e</option><option>ui-icon-triangle-1-se</option><option>ui-icon-triangle-1-s</option><option>ui-icon-triangle-1-sw</option><option>ui-icon-triangle-1-w</option><option>ui-icon-triangle-1-nw</option><option>ui-icon-triangle-2-n-s</option><option>ui-icon-triangle-2-e-w</option><option>ui-icon-arrow-1-n</option><option>ui-icon-arrow-1-ne</option><option>ui-icon-arrow-1-e</option><option>ui-icon-arrow-1-se</option><option>ui-icon-arrow-1-s</option><option>ui-icon-arrow-1-sw</option><option>ui-icon-arrow-1-w</option><option>ui-icon-arrow-1-nw</option><option>ui-icon-arrow-2-n-s</option><option>ui-icon-arrow-2-ne-sw</option><option>ui-icon-arrow-2-e-w</option><option>ui-icon-arrow-2-se-nw</option><option>ui-icon-arrowstop-1-n</option><option>ui-icon-arrowstop-1-e</option><option>ui-icon-arrowstop-1-s</option><option>ui-icon-arrowstop-1-w</option><option>ui-icon-arrowthick-1-n</option><option>ui-icon-arrowthick-1-ne</option><option>ui-icon-arrowthick-1-e</option><option>ui-icon-arrowthick-1-se</option><option>ui-icon-arrowthick-1-s</option><option>ui-icon-arrowthick-1-sw</option><option>ui-icon-arrowthick-1-w</option><option>ui-icon-arrowthick-1-nw</option><option>ui-icon-arrowthick-2-n-s</option><option>ui-icon-arrowthick-2-ne-sw</option><option>ui-icon-arrowthick-2-e-w</option><option>ui-icon-arrowthick-2-se-nw</option><option>ui-icon-arrowthickstop-1-n</option><option>ui-icon-arrowthickstop-1-e</option><option>ui-icon-arrowthickstop-1-s</option><option>ui-icon-arrowthickstop-1-w</option><option>ui-icon-arrowreturnthick-1-w</option><option>ui-icon-arrowreturnthick-1-n</option><option>ui-icon-arrowreturnthick-1-e</option><option>ui-icon-arrowreturnthick-1-s</option><option>ui-icon-arrowreturn-1-w</option><option>ui-icon-arrowreturn-1-n</option><option>ui-icon-arrowreturn-1-e</option><option>ui-icon-arrowreturn-1-s</option><option>ui-icon-arrowrefresh-1-w</option><option>ui-icon-arrowrefresh-1-n</option><option>ui-icon-arrowrefresh-1-e</option><option>ui-icon-arrowrefresh-1-s</option><option>ui-icon-arrow-4</option><option>ui-icon-arrow-4-diag</option><option>ui-icon-extlink</option><option>ui-icon-newwin</option><option>ui-icon-refresh</option><option>ui-icon-shuffle</option><option>ui-icon-transfer-e-w</option><option>ui-icon-transferthick-e-w</option><option>ui-icon-folder-collapsed</option><option>ui-icon-folder-open</option><option>ui-icon-document</option><option>ui-icon-document-b</option><option>ui-icon-note</option><option>ui-icon-mail-closed</option><option>ui-icon-mail-open</option><option>ui-icon-suitcase</option><option>ui-icon-comment</option><option>ui-icon-person</option><option>ui-icon-print</option><option>ui-icon-trash</option><option>ui-icon-locked</option><option>ui-icon-unlocked</option><option>ui-icon-bookmark</option><option>ui-icon-tag</option><option>ui-icon-home</option><option>ui-icon-flag</option><option>ui-icon-calendar</option><option>ui-icon-cart</option><option>ui-icon-pencil</option><option>ui-icon-clock</option><option>ui-icon-disk</option><option>ui-icon-calculator</option><option>ui-icon-zoomin</option><option>ui-icon-zoomout</option><option>ui-icon-search</option><option>ui-icon-wrench</option><option>ui-icon-gear</option><option>ui-icon-heart</option><option>ui-icon-star</option><option>ui-icon-link</option><option>ui-icon-cancel</option><option>ui-icon-plus</option><option>ui-icon-plusthick</option><option>ui-icon-minus</option><option>ui-icon-minusthick</option><option>ui-icon-close</option><option>ui-icon-closethick</option><option>ui-icon-key</option><option>ui-icon-lightbulb</option><option>ui-icon-scissors</option><option>ui-icon-clipboard</option><option>ui-icon-copy</option><option>ui-icon-contact</option><option>ui-icon-image</option><option>ui-icon-video</option><option>ui-icon-script</option><option>ui-icon-alert</option><option>ui-icon-info</option><option>ui-icon-notice</option><option>ui-icon-help</option><option>ui-icon-check</option><option>ui-icon-bullet</option><option>ui-icon-radio-off</option><option>ui-icon-radio-on</option><option>ui-icon-pin-w</option><option>ui-icon-pin-s</option><option>ui-icon-play</option><option>ui-icon-pause</option><option>ui-icon-seek-next</option><option>ui-icon-seek-prev</option><option>ui-icon-seek-end</option><option>ui-icon-seek-start</option><option>ui-icon-seek-first</option><option>ui-icon-stop</option><option>ui-icon-eject</option><option>ui-icon-volume-off</option><option>ui-icon-volume-on</option><option>ui-icon-power</option><option>ui-icon-signal-diag</option><option>ui-icon-signal</option><option>ui-icon-battery-0</option><option>ui-icon-battery-1</option><option>ui-icon-battery-2</option><option>ui-icon-battery-3</option><option>ui-icon-circle-plus</option><option>ui-icon-circle-minus</option><option>ui-icon-circle-close</option><option>ui-icon-circle-triangle-e</option><option>ui-icon-circle-triangle-s</option><option>ui-icon-circle-triangle-w</option><option>ui-icon-circle-triangle-n</option><option>ui-icon-circle-arrow-e</option><option>ui-icon-circle-arrow-s</option><option>ui-icon-circle-arrow-w</option><option>ui-icon-circle-arrow-n</option><option>ui-icon-circle-zoomin</option><option>ui-icon-circle-zoomout</option><option>ui-icon-circle-check</option><option>ui-icon-circlesmall-plus</option><option>ui-icon-circlesmall-minus</option><option>ui-icon-circlesmall-close</option><option>ui-icon-squaresmall-plus</option><option>ui-icon-squaresmall-minus</option><option>ui-icon-squaresmall-close</option><option>ui-icon-grip-dotted-vertical</option><option>ui-icon-grip-dotted-horizontal</option><option>ui-icon-grip-solid-vertical</option><option>ui-icon-grip-solid-horizontal</option><option>ui-icon-gripsmall-diagonal-se</option><option>ui-icon-grip-diagonal-se</option>
+              </select>
+            </div>
+
+            <div id="buttonBar">
+              <button type="button" id="applyButton" class="green90x24">Apply</button>
+              <button type="button" id="disableButton" class="green90x24">Disable</button>
+              <button type="button" id="enableButton" class="green90x24">Enable</button>
+              <button type="reset" id="resetButton" class="green90x24">Reset</button>
+            </div>
+
+          </form>
+
+          <div>
+            <h3>Executed commands:</h3>
+            <div id="commandDisplay">---</div>
+          </div>
+        </div>
+
+        <div id="testSubjectContainer" data-module="Test Subject">
+
+          <div class="testSubject">
+            <h2 id="header_puppies"><a href="#">Puppies</a></h2>
+            <div id="panel_puppies">
+              <img src="puppy-1.jpg"><img src="puppy-2.jpg"><img src="puppy-3.jpg"><img src="puppy-4.jpg"><img src="puppy-5.jpg"><img src="puppy-6.jpg">
+            </div>
+            <h2 id="header_flowers"><a href="#">Flowers</a></h2>
+            <div id="panel_flowers">
+              <img src="flower-1.jpg"><img src="flower-2.jpg"><img src="flower-3.jpg"><!--img src="flower-4.jpg"><img src="flower-5.jpg"><img src="flower-6.jpg"-->
+            </div>
+            <h2 id="header_food"><a href="#">Food</a></h2>
+            <div id="panel_food">
+              <img src="food-1.jpg"><img src="food-2.jpg"><img src="food-3.jpg"><img src="food-4.jpg"><img src="food-5.jpg"><img src="food-6.jpg">
+            </div>
+          </div>
+
+        </div>
+
+        <div id="console" data-module="Console">
+        </div>
+
+      </div>
+    </div>
+
+  </body>
+</html>

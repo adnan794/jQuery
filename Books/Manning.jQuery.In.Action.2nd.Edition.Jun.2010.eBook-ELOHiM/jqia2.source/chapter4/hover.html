@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>jQuery .hover() Example</title>
+    <link rel="stylesheet" type="text/css" href="../styles/core.css"/>
+    <script type="text/javascript" src="../scripts/jquery-1.4.js"></script>
+    <script type="text/javascript" src="../scripts/jqia2.support.js"></script>
+    <script type="text/javascript">
+      function report(event) {
+        say(event.type+' on ' + event.target.id);
+      }
+
+      $(function(){
+        $('#outer1').bind('mouseover mouseout',report);
+        $('#inner1').bind('mouseover mouseout',report);
+        $('#outer2').hover(report);
+        $('#inner2').hover(report);
+      });
+    </script>
+
+    <style type="text/css">
+      .outer {
+        position: relative;
+        width: 220px;
+        height: 96px;
+        border: solid 1px black;
+        background-color: lightseagreen;
+      }
+
+      .inner {
+        position: absolute;
+        top: 28px;
+        left: 28px;
+        right: 28px;
+        bottom: 28px;
+        border: solid 1px black;
+        background-color: khaki;
+      }
+
+      #outer2 {
+        margin-top: 24px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="outer" id="outer1">
+      Outer 1
+      <div class="inner" id="inner1">Inner 1</div>
+    </div>
+    <div class="outer" id="outer2">
+      Outer 2
+      <div class="inner" id="inner2">Inner 2</div>
+    </div>
+    <div id="console"></div>
+  </body>
+</html>

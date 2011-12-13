@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>jQuery Events Example</title>
+    <link rel="stylesheet" type="text/css" href="../styles/core.css"/>
+    <script type="text/javascript" src="../scripts/jquery-1.4.js"></script>
+    <script type="text/javascript" src="../scripts/jqia2.support.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        $('#example')
+          .bind('click',function(event) {
+            say('BOOM once!');
+          })
+          .bind('click',function(event) {
+            say('BOOM twice!');
+          })
+          .bind('click',function(event) {
+            say('BOOM three times!');
+          });
+      });
+    </script>
+  </head>
+
+  <body>
+    <img id="example" src="example.jpg"/>
+  </body>
+</html>

@@ -1,0 +1,92 @@
+body {
+  background-image: url(backg.jpg);
+}
+
+body,td,th {
+  font-family: Verdana,sans-serif;
+  font-size: 10pt;
+}
+
+#templates {
+  display: none;
+}
+
+#pageContent {
+  width: 720px;
+  background-color: white;
+  color: #444444;
+  border: 2px ridge #888888;
+  margin: 32px auto;
+  padding: 8px 32px;
+}
+
+h1,h2 {
+  text-align: center;
+}
+
+h1,h2,h3 {
+  margin: 0;
+}
+
+fieldset,legend {
+  border: 2px ridge silver;
+}
+
+fieldset {
+  padding-top: 12px;
+}
+
+legend {
+  padding: 3px 12px;
+  background-color: silver;
+  font-weight: bold;
+}
+
+#filterPane {
+  margin-bottom: 16px;
+}
+
+.filterItem * {
+  margin-right: 4px;
+  margin-bottom: 4px;
+}
+
+#resultsPane {
+  margin-top: 14px;
+}
+
+#resultsPane span.none{
+  color: silver;
+  font-style: italic;
+}
+
+#resultsPane table {
+  background-color: #444444;
+  width: 100%;
+  margin-top: 12px;
+}
+
+#resultsPane th {
+  background-color: silver;
+  border: 2px outset silver;
+  font-size: 0.9em;
+}
+
+#resultsPane td {
+  background-color: white;
+  padding: 1px 12px;
+  font-size: 0.8em;
+  text-align: center;
+}
+
+#resultsPane td:first-child {
+  text-align: left;
+}
+
+input.numeric {
+  width: 48px;
+}
+
+input.dateValue {
+  width: 64px;
+}
